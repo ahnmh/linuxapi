@@ -65,5 +65,6 @@ int main()
 	if (close(output_fd) == -1)
 		errExit("Close output");
 
+	//
 	return EXIT_SUCCESS;
 }
