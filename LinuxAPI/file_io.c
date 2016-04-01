@@ -65,6 +65,6 @@ int main()
 	if (close(output_fd) == -1)
 		errExit("Close output");
 
-	//
+	// 2016-04-01
 	return EXIT_SUCCESS;
 }
