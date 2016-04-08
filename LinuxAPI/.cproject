@@ -31,13 +31,15 @@
 									<listOptionValue builtIn="false" value="../error"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2145144281" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
-									<listOptionValue builtIn="false" value="BUFFER_SIZE=1024"/>
+									<listOptionValue builtIn="false" value="BUFFER_SIZE=1000"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.566444500" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.771605872" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
-								<option id="gnu.c.link.option.libs.1287562726" superClass="gnu.c.link.option.libs" valueType="libs">
+								<option id="gnu.c.link.option.libs.1287562726" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="pthread"/>
+									<listOptionValue builtIn="false" value="crypt"/>
+									<listOptionValue builtIn="false" value="mcheck"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1829062221" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>

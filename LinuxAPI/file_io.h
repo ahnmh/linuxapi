@@ -1,7 +1,6 @@
 
 #ifndef __FILE_IO__
 #define __FILE_IO__
-#endif
 
 #include "tlpi_hdr.h"
 #include <fcntl.h>
@@ -23,3 +22,4 @@ int file_opentempfile();
 int file_pread_pwrite();
 
 
+#endif
