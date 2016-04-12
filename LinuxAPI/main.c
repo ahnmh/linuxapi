@@ -5,9 +5,13 @@
  *      Author: root
  */
 
-//#include "file_io.h"
+#include "file_io.h"
 #include "process_env.h"
 #include "memory_alloc.h"
+#include "time_func.h"
+#include "user_group.h"
+#include "get_limit.h"
+#include "file_buffering.h"
 
 int main()
 {
@@ -45,7 +49,11 @@ int main()
 
 //	user_group();
 
-	time_related_func();
+//	time_related_func();
+
+//	get_limit();
+
+	file_buffering();
 
 
 	return 0;

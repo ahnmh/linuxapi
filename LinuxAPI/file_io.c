@@ -38,6 +38,8 @@ int file_open_read_write()
 	fileperms = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 	// rw-r--r--
 //	fileperms = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
+//	below also possible
+//	fileperms = 0644;
 
 	// open file to write
 	output_fd = open(filename_w, open_flags, fileperms);
