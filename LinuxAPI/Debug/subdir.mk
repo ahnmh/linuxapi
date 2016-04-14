@@ -8,6 +8,7 @@ C_SRCS += \
 ../file_io.c \
 ../file_io2.c \
 ../file_mount.c \
+../file_stat.c \
 ../get_limit.c \
 ../main.c \
 ../memory_alloc.c \
@@ -20,6 +21,7 @@ OBJS += \
 ./file_io.o \
 ./file_io2.o \
 ./file_mount.o \
+./file_stat.o \
 ./get_limit.o \
 ./main.o \
 ./memory_alloc.o \
@@ -32,6 +34,7 @@ C_DEPS += \
 ./file_io.d \
 ./file_io2.d \
 ./file_mount.d \
+./file_stat.d \
 ./get_limit.d \
 ./main.d \
 ./memory_alloc.d \

@@ -13,6 +13,7 @@
 #include "get_limit.h"
 #include "file_buffering.h"
 #include "file_mount.h"
+#include "file_stat.h"
 
 int main()
 {
@@ -39,7 +40,9 @@ int main()
 
 //	file_buffering();
 
-	file_mount();
+//	file_mount();
+
+	file_stat();
 
 
 	return 0;
