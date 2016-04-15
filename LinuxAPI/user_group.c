@@ -7,7 +7,11 @@
 
 #include "user_group.h"
 #include <stdio.h>
+#include <pwd.h>
+#include <grp.h>
 
+#include <unistd.h>
+#include <crypt.h> // crypt() and crypt() requires -lcrypt library
 
 void user_group()
 {

@@ -8,9 +8,6 @@
 #ifndef FILE_MOUNT_H_
 #define FILE_MOUNT_H_
 
-#include <sys/mount.h>
-#include <sys/statvfs.h> // statvfs
-
 
 void file_mount();
 

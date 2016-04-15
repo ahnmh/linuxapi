@@ -6,7 +6,6 @@
 C_SRCS += \
 ../file_buffering.c \
 ../file_io.c \
-../file_io2.c \
 ../file_mount.c \
 ../file_stat.c \
 ../get_limit.c \
@@ -19,7 +18,6 @@ C_SRCS += \
 OBJS += \
 ./file_buffering.o \
 ./file_io.o \
-./file_io2.o \
 ./file_mount.o \
 ./file_stat.o \
 ./get_limit.o \
@@ -32,7 +30,6 @@ OBJS += \
 C_DEPS += \
 ./file_buffering.d \
 ./file_io.d \
-./file_io2.d \
 ./file_mount.d \
 ./file_stat.d \
 ./get_limit.d \

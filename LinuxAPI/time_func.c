@@ -6,7 +6,14 @@
  */
 
 #include "time_func.h"
+#include "tlpi_hdr.h"
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h> // gettimeofday, time
+#include <time.h> // ctime, gmtime, localtime, clock
+#include <locale.h> // setlocale
+
 
 
 void time_related_func()

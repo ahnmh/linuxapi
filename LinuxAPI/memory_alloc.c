@@ -5,6 +5,8 @@
  *      Author: ahnmh
  */
 #include "memory_alloc.h"
+#include "tlpi_hdr.h"
+#include <stdlib.h>
 #include <mcheck.h> // mcheck it needs mcheck library.
 #include <malloc.h> // mallinfo
 

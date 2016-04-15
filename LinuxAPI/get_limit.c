@@ -4,8 +4,12 @@
  *  Created on: Apr 11, 2016
  *      Author: ahnmh
  */
-#include <stdio.h>
 #include "get_limit.h"
+
+#include <stdio.h>
+#include <unistd.h> // sysconf, pathconf
+#define _GNU_SOURCE
+#include <sys/utsname.h> // uname
 
 void get_limit()
 {
@@ -67,6 +71,8 @@ void get_limit()
 	printf("Kernel version: %s\n", utsbuf.release);
 	printf("System version: %s\n", utsbuf.version);
 	printf("System architecture: %s\n", utsbuf.machine);
-	printf("NIS domain name: %s\n", utsbuf.__domainname);
+//#ifdef _GNU_SOURCE
+//	printf("NIS domain name: %s\n", utsbuf.domainname);
+//#endif
 
 }

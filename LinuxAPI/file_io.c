@@ -4,8 +4,11 @@
  *  Created on: Mar 30, 2016
  *      Author: root
  */
-
+#include "tlpi_hdr.h"
 #include "file_io.h"
+#include <fcntl.h>
+#include <sys/uio.h> // struct iovec
+#include <sys/syscall.h> // syscall
 #include <pthread.h> // pthread_create
 
 int file_open_read_write()

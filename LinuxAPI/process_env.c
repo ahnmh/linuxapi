@@ -4,9 +4,11 @@
  *  Created on: Apr 5, 2016
  *      Author: ahnmh
  */
+#include "process_env.h"
+#include "tlpi_hdr.h"
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h> // getenv
-#include "process_env.h"
 
 // global symbols for segment(section)
 extern char etext, edata, end;
