@@ -42,7 +42,7 @@ int main()
 
 //	file_mount();
 
-	file_stat();
+//	file_stat();
 
 
 	return 0;
