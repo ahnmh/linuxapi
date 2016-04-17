@@ -14,6 +14,7 @@
 #include "file_buffering.h"
 #include "file_mount.h"
 #include "file_stat.h"
+#include "directory_link.h"
 
 int main()
 {
@@ -44,6 +45,7 @@ int main()
 
 //	file_stat();
 
+	directory_link();
 
 	return 0;
 }

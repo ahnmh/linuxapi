@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../directory_link.c \
 ../file_buffering.c \
 ../file_io.c \
 ../file_mount.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 ../user_group.c 
 
 OBJS += \
+./directory_link.o \
 ./file_buffering.o \
 ./file_io.o \
 ./file_mount.o \
@@ -28,6 +30,7 @@ OBJS += \
 ./user_group.o 
 
 C_DEPS += \
+./directory_link.d \
 ./file_buffering.d \
 ./file_io.d \
 ./file_mount.d \
