@@ -15,6 +15,8 @@
 #include "file_mount.h"
 #include "file_stat.h"
 #include "directory_link.h"
+#include "file_event.h"
+#include "signal_basic.h"
 
 int main()
 {
@@ -30,22 +32,17 @@ int main()
 */
 
 //	ret = get_enviorn();
-
 //	memory_alloc();
-
 //	user_group();
-
 //	time_related_func();
-
 //	get_limit();
-
 //	file_buffering();
-
 //	file_mount();
-
 //	file_stat();
+//	directory_link();
+//	file_event();
+	signal_basic();
 
-	directory_link();
 
 	return 0;
 }
