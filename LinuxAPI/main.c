@@ -5,18 +5,19 @@
  *      Author: root
  */
 
-#include "file_io.h"
-#include "process_env.h"
-#include "memory_alloc.h"
-#include "time_func.h"
-#include "user_group.h"
-#include "get_limit.h"
-#include "file_buffering.h"
-#include "file_mount.h"
-#include "file_stat.h"
-#include "directory_link.h"
-#include "file_event.h"
-#include "signal_basic.h"
+//#include "file_io.h"
+//#include "process_env.h"
+//#include "memory_alloc.h"
+//#include "time_func.h"
+//#include "user_group.h"
+//#include "get_limit.h"
+//#include "file_buffering.h"
+//#include "file_mount.h"
+//#include "file_stat.h"
+//#include "directory_link.h"
+//#include "file_event.h"
+//#include "signal_basic.h"
+#include "signal_handler.h"
 
 int main()
 {
@@ -42,7 +43,7 @@ int main()
 //	directory_link();
 //	file_event();
 	signal_basic();
-
+//	signal_longjmp();
 
 	return 0;
 }
