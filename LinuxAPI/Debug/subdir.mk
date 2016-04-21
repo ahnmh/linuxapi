@@ -13,6 +13,9 @@ C_SRCS += \
 ../main.c \
 ../memory_alloc.c \
 ../process_env.c \
+../signal_basic.c \
+../signal_handler.c \
+../signal_handler2.c \
 ../time_func.c \
 ../user_group.c 
 
@@ -26,6 +29,9 @@ OBJS += \
 ./main.o \
 ./memory_alloc.o \
 ./process_env.o \
+./signal_basic.o \
+./signal_handler.o \
+./signal_handler2.o \
 ./time_func.o \
 ./user_group.o 
 
@@ -39,6 +45,9 @@ C_DEPS += \
 ./main.d \
 ./memory_alloc.d \
 ./process_env.d \
+./signal_basic.d \
+./signal_handler.d \
+./signal_handler2.d \
 ./time_func.d \
 ./user_group.d 
 

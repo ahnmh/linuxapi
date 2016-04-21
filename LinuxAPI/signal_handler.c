@@ -5,7 +5,6 @@
  *      Author: ahnmh
  */
 #define _GNU_SOURCE
-
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>

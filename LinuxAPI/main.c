@@ -17,7 +17,8 @@
 //#include "directory_link.h"
 //#include "file_event.h"
 //#include "signal_basic.h"
-#include "signal_handler.h"
+//#include "signal_handler.h"
+#include "signal_handler2.h"
 
 int main()
 {
@@ -42,8 +43,9 @@ int main()
 //	file_stat();
 //	directory_link();
 //	file_event();
-	signal_basic();
+//	signal_basic();
 //	signal_longjmp();
+	signal_restart();
 
 	return 0;
 }
