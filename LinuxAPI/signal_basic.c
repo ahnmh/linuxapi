@@ -68,7 +68,8 @@ void signal_basic()
 	if(signal(SIGQUIT, signal_handler) == SIG_ERR)
 		errExit("signal(): SIGQUIT");
 
-	/*	자기자신에게 시그널을 전달하는 함수*/
+	/*	자기자신에게 시그널을 전달하는 함수: 동기식으로 전달되어 raise 함수가 리턴되기 전에
+	 *  시그널 핸들러가 호출된다. */
 
 //	if(raise(SIGINT) != 0)
 //		errMsg("raise(SIGINT)");
