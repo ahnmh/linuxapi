@@ -9,9 +9,12 @@
 #include <signal.h>
 #include "signal_realtime_sender.h"
 
-void signal_sender(int sig)
+void signal_sender(int pid, int sig)
 {
+	union sigval sv;
+	sv.sival_int = sig;
 
-
+	if(sigqueue(pid, sig, sv) == -1)
+		perror("sigqueue\n");
 }
 

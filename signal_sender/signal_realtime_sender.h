@@ -8,6 +8,6 @@
 #ifndef SIGNAL_REALTIME_SENDER_H_
 #define SIGNAL_REALTIME_SENDER_H_
 
-void signal_sender(int sig);
+void signal_sender(int pid, int sig);
 
 #endif /* SIGNAL_REALTIME_SENDER_H_ */

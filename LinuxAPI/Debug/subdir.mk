@@ -16,6 +16,9 @@ C_SRCS += \
 ../signal_basic.c \
 ../signal_handler.c \
 ../signal_handler2.c \
+../signal_realtime_handler.c \
+../signal_suspend.c \
+../signal_suspend_sync.c \
 ../time_func.c \
 ../user_group.c 
 
@@ -32,6 +35,9 @@ OBJS += \
 ./signal_basic.o \
 ./signal_handler.o \
 ./signal_handler2.o \
+./signal_realtime_handler.o \
+./signal_suspend.o \
+./signal_suspend_sync.o \
 ./time_func.o \
 ./user_group.o 
 
@@ -48,6 +54,9 @@ C_DEPS += \
 ./signal_basic.d \
 ./signal_handler.d \
 ./signal_handler2.d \
+./signal_realtime_handler.d \
+./signal_suspend.d \
+./signal_suspend_sync.d \
 ./time_func.d \
 ./user_group.d 
 

@@ -7,7 +7,7 @@
 #define _GNU_SOURCE
 
 #include "tlpi_hdr.h"
-#include "signal_basic.h"
+#include "signal_func.h"
 
 #include <stdio.h>
 #include <signal.h>

@@ -13,7 +13,7 @@
 #include <fcntl.h>
 
 #include "tlpi_hdr.h"
-#include "signal_handler2.h"
+#include "signal_func.h"
 #define BUF_SIZE 4096
 
 void signal_handler_func2(int sig)

@@ -11,7 +11,7 @@
 #include <setjmp.h>
 
 #include "tlpi_hdr.h"
-#include "signal_handler.h"
+#include "signal_func.h"
 
 // 변수의 현재값을 캐시하지 않도록 하고 메모리에 상주하도록 volatile로 지정함.
 // 정수 데이터 sig_atomic_t는 시그널 핸들러와 메인함수 간 읽기와 쓰기가 아토믹함을 보장한다.
