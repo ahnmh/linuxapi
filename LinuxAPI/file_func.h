@@ -22,6 +22,7 @@ int file_pread_pwrite();
 void file_mount();
 void file_stat();
 int file_buffering();
+void file_event();
 
 
 #endif /* FILE_FUNC_H_ */
