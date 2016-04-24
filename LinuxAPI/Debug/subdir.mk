@@ -20,6 +20,9 @@ C_SRCS += \
 ../signal_suspend.c \
 ../signal_suspend_sync.c \
 ../time_func.c \
+../timer_func.c \
+../timer_sleep.c \
+../timer_sync_expire.c \
 ../user_group.c 
 
 OBJS += \
@@ -39,6 +42,9 @@ OBJS += \
 ./signal_suspend.o \
 ./signal_suspend_sync.o \
 ./time_func.o \
+./timer_func.o \
+./timer_sleep.o \
+./timer_sync_expire.o \
 ./user_group.o 
 
 C_DEPS += \
@@ -58,6 +64,9 @@ C_DEPS += \
 ./signal_suspend.d \
 ./signal_suspend_sync.d \
 ./time_func.d \
+./timer_func.d \
+./timer_sleep.d \
+./timer_sync_expire.d \
 ./user_group.d 
 
 

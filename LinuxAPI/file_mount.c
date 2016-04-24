@@ -5,13 +5,12 @@
  *      Author: ahnmh
  */
 
-#include "file_mount.h"
-#include "tlpi_hdr.h"
-
 #include <stdio.h>
 #include <sys/mount.h>
 #include <sys/statvfs.h> // statvfs
 
+#include "file_func.h"
+#include "tlpi_hdr.h"
 
 
 void file_mount()

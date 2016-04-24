@@ -5,8 +5,6 @@
  *      Author: ahnmh
  */
 
-#include "file_stat.h"
-#include "tlpi_hdr.h"
 #include <stdio.h>
 #include <sys/stat.h> // stat, chmod
 #include <fcntl.h> // open
@@ -15,6 +13,8 @@
 #include <linux/fs.h> // FS_IOC_GETFLAGS, FS_IOC_SETFLAGS
 #include <sys/ioctl.h> // ioctl
 
+#include "file_func.h"
+#include "tlpi_hdr.h"
 
 void file_stat()
 {

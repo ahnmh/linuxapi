@@ -8,7 +8,7 @@
 #define _GNU_SOURCE	// to use O_DIRECT flag
 #include <stdio.h>
 #include "tlpi_hdr.h"
-#include "file_buffering.h"
+#include "file_func.h"
 #include <fcntl.h>
 #include <malloc.h> // memalign
 

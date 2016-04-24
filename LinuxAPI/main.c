@@ -16,7 +16,8 @@
 //#include "file_stat.h"
 //#include "directory_link.h"
 //#include "file_event.h"
-#include "signal_func.h"
+//#include "signal_func.h"
+#include "timer_func.h"
 
 int main()
 {
@@ -46,7 +47,10 @@ int main()
 //	signal_restart();
 //	signal_realtime();
 //	signal_suspend();
-	signal_suspend_sync();
+//	signal_suspend_sync();
+//	timer_func();
+//	timer_sync_expire();
+	timer_sleep();
 
 	return 0;
 }
