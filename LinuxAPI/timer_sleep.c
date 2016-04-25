@@ -31,7 +31,7 @@ void timer_sleep()
 	ts.tv_sec = 5;
 	ts.tv_nsec = 0;
 
-	printf("Process will be sleep...\n", remain.tv_sec);
+	printf("Process will be sleep...\n");
 	if(nanosleep(&ts, &remain) == -1) {
 		printf("remain time: %d", remain.tv_sec);
 	}

@@ -50,7 +50,9 @@ int main()
 //	signal_suspend_sync();
 //	timer_func();
 //	timer_sync_expire();
-	timer_sleep();
+//	timer_sleep();
+//	timer_clock_gettime();
+	timer_clock_nanosleep();
 
 	return 0;
 }

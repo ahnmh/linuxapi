@@ -11,5 +11,6 @@
 void timer_func();
 void timer_sync_expire();
 void timer_sleep();
+void timer_clock_gettime();
 
 #endif /* TIMER_FUNC_H_ */
