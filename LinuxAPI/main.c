@@ -5,19 +5,16 @@
  *      Author: root
  */
 
-//#include "file_io.h"
+//#include "file_func.h"
 //#include "process_env.h"
 //#include "memory_alloc.h"
 //#include "time_func.h"
 //#include "user_group.h"
 //#include "get_limit.h"
-//#include "file_buffering.h"
-//#include "file_mount.h"
-//#include "file_stat.h"
 //#include "directory_link.h"
-//#include "file_event.h"
 //#include "signal_func.h"
-#include "timer_func.h"
+//#include "timer_func.h"
+#include "process_func.h"
 
 int main()
 {
@@ -52,7 +49,12 @@ int main()
 //	timer_sync_expire();
 //	timer_sleep();
 //	timer_clock_gettime();
-	timer_clock_nanosleep();
+//	timer_clock_nanosleep();
+//	timer_advanced_signal();
+//	timer_advanced_thread();
+//	timer_advanced_fd();
+//	process_func();
+	process_sync_by_signal();
 
 	return 0;
 }

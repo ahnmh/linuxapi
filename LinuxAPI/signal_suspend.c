@@ -59,8 +59,13 @@ void signal_suspend()
 //			continue;
 		loop++;
 
-		// 임계 영역 수행을 완료한 후 sigsuspend 함수를 사용해서 수행을 중지(suspend)하고, 시그널 입력을 대기함.
-		// suspend 이전에 시그널 입력이 있었거나 대기중 시그널 입력이 발생한 경우 시그널 핸들러를 호출하고 리턴됨.
+		/*
+		 *  임계 영역 수행을 완료한 후 sigsuspend 함수를 사용해서 수행을 중지(suspend)하고, 시그널 입력을 대기함.
+			sigsuspend는 현재 프로세스의 시그널 마스크를 파라미터로 전달받은 마스크 집합으로 교체한후,
+			현재 스레드를 블록하고 시그널을 기다린다.
+			시그널 핸들러가 호출된 다음 리턴되면 다시 원래의 시그널 마스크를 복원한다.
+		*/
+
 		if(sigsuspend(&originmask) == -1 && errno != EINTR)
 			errExit("sigsuspend()");
 
