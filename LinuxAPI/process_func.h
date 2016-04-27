@@ -10,5 +10,9 @@
 
 void process_func();
 void process_sync_by_signal();
+void process_exit();
+void process_wait();
+void process_waitpid();
+
 
 #endif /* PROCESS_FUNC_H_ */

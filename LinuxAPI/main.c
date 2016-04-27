@@ -54,7 +54,10 @@ int main()
 //	timer_advanced_thread();
 //	timer_advanced_fd();
 //	process_func();
-	process_sync_by_signal();
+//	process_sync_by_signal();
+//	process_exit();
+//	process_wait();
+	process_waitpid();
 
 	return 0;
 }
