@@ -57,7 +57,10 @@ int main()
 //	process_sync_by_signal();
 //	process_exit();
 //	process_wait();
-	process_waitpid();
+//	process_waitpid();
+//	process_waitid();
+//	process_wait_by_signal();
+	process_exec();
 
 	return 0;
 }

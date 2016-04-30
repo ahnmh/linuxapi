@@ -13,6 +13,6 @@ void process_sync_by_signal();
 void process_exit();
 void process_wait();
 void process_waitpid();
-
+void process_exec();
 
 #endif /* PROCESS_FUNC_H_ */
