@@ -92,7 +92,7 @@ int file_fcntl()
 	if (input_fd == -1)
 		errExit("open(): %s", filename_r);
 
-	// get current flags value
+	// get current file status flags value
 	flags = fcntl(input_fd, F_GETFL);
 	if(flags == -1)
 		errExit("fcntl()");

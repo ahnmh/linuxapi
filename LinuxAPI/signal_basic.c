@@ -55,7 +55,16 @@ static void signal_handler(int sig)
 		break;
 	case SIGQUIT:
 		printf("caught signal is SIGQUIT\n");
-		exit(EXIT_SUCCESS);
+
+/*
+		아래와 같이 exit로 정상 종료하는 것은 옳지 않다.
+		시그널을 받아서 종료하는 것인데 시그널 핸들러에서 exit로 종료하면 정상 종료하는 것처럼 보이기 때문임.
+//		exit(EXIT_SUCCESS);
+
+		SIGQUIT으로 종료하고자 하면 한번더 시그널을 보낸다.
+*/
+		signal(SIGQUIT, SIG_DFL); // 핸들러 제거
+		raise(SIGQUIT);
 	}
 }
 

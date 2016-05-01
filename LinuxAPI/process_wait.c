@@ -53,6 +53,9 @@ void process_wait()
 }
 
 
+/* 자식 프로세스 중 첫번째 프로세스만 시그널에 대기하고 부모는 이 프로세스에 대해서만 기다림
+ * waitpid 함수를 통해 자식 프로세스가 시그널에 의해 종료된 사실을 알 수 있음.
+ * */
 
 void process_waitpid()
 {
@@ -95,11 +98,23 @@ void process_waitpid()
       -1 : 아무 자식 프로세스 중 하나가 끝나기를 대기
       -1보다 작으면 pid의 절대값과 동일한 프로세스 그룹 ID를 갖는 자식 프로세스를 기다림.
 	 - 시그널에 의해 종료되는 것(아래 예제)도 감지한다.
-	 - 자식 중 상태 변경된 것이 없다면 바로 리턴된다.
+	 - 자식 중 상태 변경된 것이 없다면 바로 리턴할 수 있다.
 */
 
-	waitpid(wait_child, &status, WUNTRACED);
+	printf("test=%d\n", wait_child);
+	waitpid(wait_child, &status, WUNTRACED); // WUNTRACED == 시그널에 의해 자식 프로세스가 멈출 때도 리턴함.
 
-	printf("status = %d", status);
+	printf("status = %d\n", status);
+	// 종료 상태값을 확인할 수 있는 매크로
+	if(WIFEXITED(status)) // 정상적(exit)에 의해 종료됨
+		printf("WIFEXITED\n");
+	if(WIFSIGNALED(status)) // 시그널에 의해 종료됨
+		printf("WIFSIGNALED: %d\n", WTERMSIG(status)); // 시그널 번호를 얻어오는 매크로.
+	if(WIFSTOPPED(status)) // 시그널에 의해 멈추었음.
+		printf("WIFSTOPPED\n");
+	if(WIFCONTINUED(status)) // SIGCONT를 받고 재개됨.
+		printf("WIFCONTINUED\n");
+
+
 
 }

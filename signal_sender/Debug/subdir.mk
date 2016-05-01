@@ -3,6 +3,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+O_SRCS += \
+../signal_sender.o 
+
 C_SRCS += \
 ../signal_realtime_sender.c \
 ../signal_sender.c 

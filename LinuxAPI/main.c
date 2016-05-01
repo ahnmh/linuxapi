@@ -60,7 +60,8 @@ int main()
 //	process_waitpid();
 //	process_waitid();
 //	process_wait_by_signal();
-	process_exec();
+//	process_exec();
+	process_clone();
 
 	return 0;
 }

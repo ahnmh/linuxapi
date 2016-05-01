@@ -14,5 +14,6 @@ void process_exit();
 void process_wait();
 void process_waitpid();
 void process_exec();
+void process_clone();
 
 #endif /* PROCESS_FUNC_H_ */

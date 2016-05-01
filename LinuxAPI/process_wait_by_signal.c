@@ -66,8 +66,12 @@ void process_wait_by_signal()
 
 	// 시그널 핸들러 설정
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
+	sa.sa_flags = 0;
 	sa.sa_handler = sigchld_signal_handler;
+/*
+	만일 sigaction 함수에서 SIGCHLD 시그널에 대해 SIG_IGN을 설정하면 그 이후에 종료되는
+	자식 프로세스들은 좀비가 되지 않고 즉각적으로 시스템에서 제거된다.
+*/
 	if(sigaction(SIGCHLD, &sa, NULL) == -1)
 		errExit("sigaction()\n");
 
