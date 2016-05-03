@@ -15,5 +15,6 @@ void process_wait();
 void process_waitpid();
 void process_exec();
 void process_clone();
+void process_setpgid();
 
 #endif /* PROCESS_FUNC_H_ */

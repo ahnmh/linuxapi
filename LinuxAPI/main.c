@@ -61,7 +61,8 @@ int main()
 //	process_waitid();
 //	process_wait_by_signal();
 //	process_exec();
-	process_clone();
+//	process_clone();
+	process_setpgid();
 
 	return 0;
 }
