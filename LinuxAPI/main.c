@@ -62,7 +62,10 @@ int main()
 //	process_wait_by_signal();
 //	process_exec();
 //	process_clone();
-	process_setpgid();
+//	process_setpgid();
+//	process_priority();
+//	process_scheduler();
+	process_resources();
 
 	return 0;
 }

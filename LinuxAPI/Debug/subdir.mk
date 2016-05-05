@@ -18,6 +18,8 @@ C_SRCS += \
 ../process_exec.c \
 ../process_exit.c \
 ../process_func.c \
+../process_priority.c \
+../process_resources.c \
 ../process_setpgid.c \
 ../process_sync_by_signal.c \
 ../process_wait.c \
@@ -50,6 +52,8 @@ OBJS += \
 ./process_exec.o \
 ./process_exit.o \
 ./process_func.o \
+./process_priority.o \
+./process_resources.o \
 ./process_setpgid.o \
 ./process_sync_by_signal.o \
 ./process_wait.o \
@@ -82,6 +86,8 @@ C_DEPS += \
 ./process_exec.d \
 ./process_exit.d \
 ./process_func.d \
+./process_priority.d \
+./process_resources.d \
 ./process_setpgid.d \
 ./process_sync_by_signal.d \
 ./process_wait.d \

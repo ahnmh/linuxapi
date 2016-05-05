@@ -42,7 +42,7 @@ void process_setpgid()
 
 	// 자식 프로세스인 경우 PGID 재설정
 	if(child == 0)
-		if(setpgid(0, 0) == -1) // 자식 프로세스의 PID가 자식 프로세스의 PGID가 됨.
+		if(setpgid(0, 0) == -1) // 0, 0인 경우 자식 프로세스의 PID가 자식 프로세스의 PGID가 됨.
 			errExit("setpgid");
 
 	printf("PID = %ld, PPID = %ld, PGID = %ld, SID = %ld\n",
