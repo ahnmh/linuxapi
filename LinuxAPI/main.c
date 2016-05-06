@@ -14,11 +14,12 @@
 //#include "directory_link.h"
 //#include "signal_func.h"
 //#include "timer_func.h"
-#include "process_func.h"
+//#include "process_func.h"
+#include "process_daemonize.h"
 
 int main()
 {
-//	int ret = EXIT_SUCCESS;
+	int ret = 0;
 
 /*
 	ret = file_io();
@@ -65,7 +66,8 @@ int main()
 //	process_setpgid();
 //	process_priority();
 //	process_scheduler();
-	process_resources();
+//	process_resources();
+	process_daemonize();
 
 	return 0;
 }
