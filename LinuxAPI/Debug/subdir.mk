@@ -14,6 +14,7 @@ C_SRCS += \
 ../main.c \
 ../memory_alloc.c \
 ../process_clone.c \
+../process_daemonize.c \
 ../process_env.c \
 ../process_exec.c \
 ../process_exit.c \
@@ -30,12 +31,14 @@ C_SRCS += \
 ../signal_realtime_handler.c \
 ../signal_suspend.c \
 ../signal_suspend_sync.c \
+../syslog_test.c \
 ../time_func.c \
 ../timer_clock.c \
 ../timer_func.c \
 ../timer_sleep.c \
 ../timer_sync_expire.c \
-../user_group.c 
+../user_group.c \
+../user_setuserid.c 
 
 OBJS += \
 ./directory_link.o \
@@ -48,6 +51,7 @@ OBJS += \
 ./main.o \
 ./memory_alloc.o \
 ./process_clone.o \
+./process_daemonize.o \
 ./process_env.o \
 ./process_exec.o \
 ./process_exit.o \
@@ -64,12 +68,14 @@ OBJS += \
 ./signal_realtime_handler.o \
 ./signal_suspend.o \
 ./signal_suspend_sync.o \
+./syslog_test.o \
 ./time_func.o \
 ./timer_clock.o \
 ./timer_func.o \
 ./timer_sleep.o \
 ./timer_sync_expire.o \
-./user_group.o 
+./user_group.o \
+./user_setuserid.o 
 
 C_DEPS += \
 ./directory_link.d \
@@ -82,6 +88,7 @@ C_DEPS += \
 ./main.d \
 ./memory_alloc.d \
 ./process_clone.d \
+./process_daemonize.d \
 ./process_env.d \
 ./process_exec.d \
 ./process_exit.d \
@@ -98,12 +105,14 @@ C_DEPS += \
 ./signal_realtime_handler.d \
 ./signal_suspend.d \
 ./signal_suspend_sync.d \
+./syslog_test.d \
 ./time_func.d \
 ./timer_clock.d \
 ./timer_func.d \
 ./timer_sleep.d \
 ./timer_sync_expire.d \
-./user_group.d 
+./user_group.d \
+./user_setuserid.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

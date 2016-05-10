@@ -5,13 +5,13 @@
  *      Author: root
  */
 
-#include "user_group.h"
 #include <stdio.h>
 #include <pwd.h>
 #include <grp.h>
 
 #include <unistd.h>
 #include <crypt.h> // crypt() and crypt() requires -lcrypt library
+#include "user_func.h"
 
 void user_group()
 {
@@ -50,6 +50,5 @@ void user_group()
 /*	 crypt will return an encrypted password with 13 characters.*/
 	char *encoded = crypt("1qaz2wsx", "mh"); // text passphrase, salt
 	printf("encoded password=%s\n", encoded);
-
 
 }
