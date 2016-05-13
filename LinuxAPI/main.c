@@ -9,7 +9,7 @@
 //#include "process_env.h"
 //#include "memory_alloc.h"
 //#include "time_func.h"
-#include "user_func.h"
+//#include "user_func.h"
 //#include "get_limit.h"
 //#include "directory_link.h"
 //#include "signal_func.h"
@@ -17,6 +17,7 @@
 //#include "process_func.h"
 //#include "process_daemonize.h"
 //#include "syslog_test.h"
+#include "capability_test.h"
 
 int main()
 {
@@ -70,8 +71,9 @@ int main()
 //	process_resources();
 //	process_daemonize();
 //	syslog_test();
-	user_getuserid();
-	user_setuserid();
+//	user_getuserid();
+//	user_setuserid();
+	set_capability();
 
 
 	return 0;
