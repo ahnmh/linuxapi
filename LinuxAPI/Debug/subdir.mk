@@ -4,7 +4,9 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../capability_test.c \
 ../directory_link.c \
+../dltest.c \
 ../file_buffering.c \
 ../file_event.c \
 ../file_io.c \
@@ -41,7 +43,9 @@ C_SRCS += \
 ../user_setuserid.c 
 
 OBJS += \
+./capability_test.o \
 ./directory_link.o \
+./dltest.o \
 ./file_buffering.o \
 ./file_event.o \
 ./file_io.o \
@@ -78,7 +82,9 @@ OBJS += \
 ./user_setuserid.o 
 
 C_DEPS += \
+./capability_test.d \
 ./directory_link.d \
+./dltest.d \
 ./file_buffering.d \
 ./file_event.d \
 ./file_io.d \

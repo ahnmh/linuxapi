@@ -17,7 +17,8 @@
 //#include "process_func.h"
 //#include "process_daemonize.h"
 //#include "syslog_test.h"
-#include "capability_test.h"
+//#include "capability_test.h"
+#include "dltest.h"
 
 int main()
 {
@@ -73,7 +74,8 @@ int main()
 //	syslog_test();
 //	user_getuserid();
 //	user_setuserid();
-	set_capability();
+//	set_capability();
+	dltest();
 
 
 	return 0;
