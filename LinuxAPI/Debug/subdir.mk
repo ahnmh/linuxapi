@@ -15,6 +15,7 @@ C_SRCS += \
 ../get_limit.c \
 ../main.c \
 ../memory_alloc.c \
+../option_parsing.c \
 ../process_clone.c \
 ../process_daemonize.c \
 ../process_env.c \
@@ -54,6 +55,7 @@ OBJS += \
 ./get_limit.o \
 ./main.o \
 ./memory_alloc.o \
+./option_parsing.o \
 ./process_clone.o \
 ./process_daemonize.o \
 ./process_env.o \
@@ -93,6 +95,7 @@ C_DEPS += \
 ./get_limit.d \
 ./main.d \
 ./memory_alloc.d \
+./option_parsing.d \
 ./process_clone.d \
 ./process_daemonize.d \
 ./process_env.d \

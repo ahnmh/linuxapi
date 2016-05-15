@@ -20,7 +20,7 @@
 //#include "capability_test.h"
 #include "dltest.h"
 
-int main()
+int main(int argc, char *argv[])
 {
 	int ret = 0;
 
@@ -75,7 +75,8 @@ int main()
 //	user_getuserid();
 //	user_setuserid();
 //	set_capability();
-	dltest();
+//	dltest();
+	option_parsing(argc, argv);
 
 
 	return 0;
