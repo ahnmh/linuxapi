@@ -9,5 +9,8 @@
 #define PTHREAD_FUNC_H_
 
 void pthread_introduce();
+void pthread_sync();
+void pthread_sync_error_checking_mutex();
+void pthread_cond_var();
 
 #endif /* PTHREAD_FUNC_H_ */
