@@ -19,7 +19,7 @@ static void *thread_func(void *arg)
 	int * sec = (int *)arg;
 
 	int i;
-	for(i = 0; i < 10; i++) {
+	for(i = 0; i < 1000; i++) {
 		// 조건변수가 필요한 상황을 시뮬레이션
 		sleep(*sec);
 		// 뮤텍스를 얻어서 work를 추가한다.

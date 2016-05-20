@@ -12,5 +12,6 @@ void pthread_introduce();
 void pthread_sync();
 void pthread_sync_error_checking_mutex();
 void pthread_cond_var();
+void pthread_safe();
 
 #endif /* PTHREAD_FUNC_H_ */
