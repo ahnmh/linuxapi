@@ -6,11 +6,12 @@
  */
 
 #include <pthread.h>
+#include <stdio.h>
 #include "pthread_func.h"
 #include "tlpi_hdr.h"
 
 #define BUFFER_LEN	256
-static char buf[256];
+static char buf[BUFFER_LEN];
 
 
 /*
@@ -35,6 +36,19 @@ static void *thread_func_unsafe(void *arg)
 	printf("thread id = 0x%x, %s\n", (unsigned int)tid, buf);
 	return NULL;
 }
+
+
+
+/*
+스레드별 데이터(Thread-Specific Data) API를 사용한 Thread-safe 구현
+Thread-safe 한 경우 출력은 아래와 같을 수 있다.
+ahnmh@ahnmh-amor2:~/sample/LinuxAPI2/Debug$ ./LinuxAPI2
+thread id = 0xbbec5700, Message: I'm an emproyee of samsung electronics.
+thread id = 0xbc6c6700, Message: Hello, This is myunghoon Ahn.
+ahnmh@ahnmh-amor2:~/sample/LinuxAPI2/Debug$ ./LinuxAPI2
+thread id = 0xd77c8700, Message: Hello, This is myunghoon Ahn.
+thread id = 0xd6fc7700, Message: I'm an emproyee of samsung electronics.
+*/
 
 // 1회 초기화를 위해 pthread_once 전역 변수
 static pthread_once_t once = PTHREAD_ONCE_INIT;
@@ -65,17 +79,6 @@ static void create_key()
 		errExitEN(s, "pthread_key_create");
 }
 
-
-/*
-스레드별 데이터(Thread-Specific Data) API를 사용한 Thread-safe 구현
-Thread-safe 한 경우 출력은 아래와 같을 수 있다.
-ahnmh@ahnmh-amor2:~/sample/LinuxAPI2/Debug$ ./LinuxAPI2
-thread id = 0xbbec5700, Message: I'm an emproyee of samsung electronics.
-thread id = 0xbc6c6700, Message: Hello, This is myunghoon Ahn.
-ahnmh@ahnmh-amor2:~/sample/LinuxAPI2/Debug$ ./LinuxAPI2
-thread id = 0xd77c8700, Message: Hello, This is myunghoon Ahn.
-thread id = 0xd6fc7700, Message: I'm an emproyee of samsung electronics.
-*/
 
 static void *thread_func_safe_with_tsd(void *arg)
 {
@@ -117,9 +120,22 @@ static void *thread_func_safe_with_tsd(void *arg)
 }
 
 
-/*TLS를 이용한 Thread-safe 구현*/
+/*
+TLS를 이용한 Thread-safe 구현
+TSD를 사용하는 것보다 훨씬 간단하다.
+전역 변수 다음에 __thread 속성만 부여하면 됨.(표준은 아님)
+*/
+static __thread char tbuf[BUFFER_LEN];
 
+static void *thread_func_safe_with_tls(void *arg)
+{
+	char *str = (char*)arg;
+	pthread_t tid = pthread_self();
+	snprintf(tbuf, BUFFER_LEN, "Message: %s", str);
 
+	printf("thread id = 0x%x, %s\n", (unsigned int)tid, tbuf);
+	return NULL;
+}
 
 void pthread_safe()
 {
@@ -128,13 +144,15 @@ void pthread_safe()
 
 	char *str1 = "Hello, This is myunghoon Ahn.";
 //	s = pthread_create(&t1, NULL, thread_func_unsafe, str1);
-	s = pthread_create(&t1, NULL, thread_func_safe_with_tsd, str1);
+//	s = pthread_create(&t1, NULL, thread_func_safe_with_tsd, str1);
+	s = pthread_create(&t1, NULL, thread_func_safe_with_tls, str1);
 	if(s != 0)
 		errExitEN(s, "pthread_create");
 
 	char *str2 = "I'm an emproyee of samsung electronics.";
 //	s = pthread_create(&t2, NULL, thread_func_unsafe, str2);
-	s = pthread_create(&t2, NULL, thread_func_safe_with_tsd, str2);
+//	s = pthread_create(&t2, NULL, thread_func_safe_with_tsd, str2);
+	s = pthread_create(&t2, NULL, thread_func_safe_with_tls, str2);
 	if(s != 0)
 		errExitEN(s, "pthread_create");
 

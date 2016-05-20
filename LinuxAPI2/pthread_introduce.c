@@ -5,6 +5,7 @@
  *      Author: ahnmh
  */
 
+#include <stdio.h>
 #include <pthread.h>
 #include "pthread_func.h"
 #include "tlpi_hdr.h"

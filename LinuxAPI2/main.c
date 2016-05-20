@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 //	pthread_sync();
 //	pthread_sync_error_checking_mutex();
 //	pthread_cond_var();
-	pthread_safe();
+//	pthread_safe();
+	pthread_cancellation();
 	return 0;
 }
