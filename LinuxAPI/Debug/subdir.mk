@@ -36,6 +36,9 @@ C_SRCS += \
 ../signal_suspend_sync.c \
 ../syslog_test.c \
 ../time_func.c \
+../timer_advanced_fd.c \
+../timer_advanced_signal.c \
+../timer_advanced_thread.c \
 ../timer_clock.c \
 ../timer_func.c \
 ../timer_sleep.c \
@@ -76,6 +79,9 @@ OBJS += \
 ./signal_suspend_sync.o \
 ./syslog_test.o \
 ./time_func.o \
+./timer_advanced_fd.o \
+./timer_advanced_signal.o \
+./timer_advanced_thread.o \
 ./timer_clock.o \
 ./timer_func.o \
 ./timer_sleep.o \
@@ -116,6 +122,9 @@ C_DEPS += \
 ./signal_suspend_sync.d \
 ./syslog_test.d \
 ./time_func.d \
+./timer_advanced_fd.d \
+./timer_advanced_signal.d \
+./timer_advanced_thread.d \
 ./timer_clock.d \
 ./timer_func.d \
 ./timer_sleep.d \

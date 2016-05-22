@@ -14,6 +14,10 @@ int main(int argc, char *argv[])
 //	pthread_sync_error_checking_mutex();
 //	pthread_cond_var();
 //	pthread_safe();
-	pthread_cancellation();
+//	pthread_cancellation();
+//	ipc_pipe(argc, argv);
+//	ipc_pipe_stdinout();
+	ipc_pipe_popen();
+
 	return 0;
 }
