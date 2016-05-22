@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lpthread -lcap -ldl -lcrypt -lmcheck
+LIBS := -lpthread -lrt -lcap -ldl -lcrypt -lmcheck
 
