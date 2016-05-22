@@ -13,5 +13,6 @@ void ipc_pipe_stdinout();
 void ipc_pipe_popen();
 
 void ipc_fifo_server();
+void ipc_fifo_client();
 
 #endif /* IPC_FUNC_H_ */

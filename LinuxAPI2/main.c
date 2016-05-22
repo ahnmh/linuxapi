@@ -17,7 +17,8 @@ int main(int argc, char *argv[])
 //	pthread_cancellation();
 //	ipc_pipe(argc, argv);
 //	ipc_pipe_stdinout();
-	ipc_pipe_popen();
+//	ipc_pipe_popen();
+	ipc_fifo_client();
 
 	return 0;
 }
