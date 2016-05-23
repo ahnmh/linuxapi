@@ -1,13 +1,13 @@
 C_SRCS += \
-		ipc_fifo_client.c \
+		ipc_systemv_msg_client.c \
 		../error/error_functions.c \
 		../error/get_num.c 
 OBJS += \
-		ipc_fifo_client.o \
+		ipc_systemv_msg_client.o \
 		../error/error_functions.o \
 		../error/get_num.o 
 C_DEPS += \
-		ipc_fifo_client.d \
+		ipc_systemv_msg_client.d \
 		../error/error_functions.d \
 		../error/get_num.d 
 
@@ -32,9 +32,9 @@ RM := rm -rf
 		gcc $(INCLUDES) $(DEFINITIONS) -c $(CFLAGS) -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 		@echo 'Finished building: $<'
 
-all: ipc_fifo_client
+all: ipc_systemv_msg_client
 
-ipc_fifo_client: $(OBJS)
+ipc_systemv_msg_client: $(OBJS)
 		@echo 'Building target: $@'
 		@echo 'Invoking: GCC C Linker'
 		gcc -o $@ $^ $(LIBS)
@@ -42,7 +42,7 @@ ipc_fifo_client: $(OBJS)
 		@echo ' '
 
 clean:
-		-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) ipc_fifo_client
+		-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) ipc_systemv_msg_client
 		@echo ' '
 
 .PHONY: all clean

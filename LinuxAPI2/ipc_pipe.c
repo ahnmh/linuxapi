@@ -168,6 +168,19 @@ void ipc_pipe_stdinout()
 }
 
 
+/*
+파이프는 보통 셸 명령을 실행할 때, 셸 명령의 실행 출력값을 읽거나 보낼때 사용한다.
+이 작업을 쉽게 하고자 popen, pclose 함수를 제공함.
+popen 함수
+: 파이프 생성 -> 셸(/bin/sh)을 실행할 자식 프로세스를 생성 -> command 인자로 주어진 명령을 실행하기 위한 자식 프로세스를 생성
+: 자식 프로세스(command 인자를 실행하는)의 표준 출력을 파이프 읽기 엔드포인트로 읽어들이거나,(아래 예제)
+: 자식 프로세스(command 인자를 실행하는)의 표준 입력을 파이프 쓰기 엔드포인트로 사용
+
+popen()의 이점:
+파이프를 만들고 디스크립터를 복사하고 사용하지 않는 디스크립터를 닫는 역할을 수행해준다.
+fork, exec를 대신 수행해준다.
+그러나 보안상의 이유로 특권 프로그램에서는 사용해서는 안된다.(system도 마찬가지임)
+*/
 #include <limits.h> // PATH_MAX
 void ipc_pipe_popen()
 {
@@ -175,16 +188,22 @@ void ipc_pipe_popen()
 	int filecnt = 0;
 	char pathname[PATH_MAX];
 
+	// ls -l 명령을 실행하는 자식 프로세스를 생성하고, 표준 출력을 읽기 엔드포인트로 읽어들인다.
+	// 함수의 리턴값이 바로 읽기 엔드포인트 파일 디스크립터(파일 스트림)임.
 	fp = popen("ls -l", "r");
 	if(fp == NULL)
 		errExit("popen()");
 
-
+	// 읽기 엔드포인트 읽어온 결과물이 몇 라인인지 확인함.
 	while(fgets(pathname, PATH_MAX, fp) != NULL) {
 		printf("%s", pathname);
 		filecnt++;
 	}
 
+/*
+	pclose 함수: 파이프를 닫고 자식 셸이 종료되길 기다림.
+	자식이 성공적으로 종료되면 자식 셸의 종료 상태를 리턴함.
+*/
 	int status;
 	status = pclose(fp);
 	printf("list count = %d\n", filecnt);

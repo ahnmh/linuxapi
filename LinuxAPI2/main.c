@@ -6,6 +6,8 @@
  */
 
 #include "pthread_func.h"
+#include "pthread_func.h"
+#include "ipc_func.h"
 
 int main(int argc, char *argv[])
 {
@@ -18,7 +20,8 @@ int main(int argc, char *argv[])
 //	ipc_pipe(argc, argv);
 //	ipc_pipe_stdinout();
 //	ipc_pipe_popen();
-	ipc_fifo_client();
+//	ipc_fifo_server();
+	ipc_systemv_msg_server();
 
 	return 0;
 }
