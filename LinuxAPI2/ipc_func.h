@@ -43,6 +43,16 @@ void ipc_systemv_msg_client();
 
 
 #include <sys/sem.h>
+
+union semun {
+	int val;
+	struct semid_ds *buf;
+	unsigned short *array;
+#if defined(__linux__)
+	struct seminfo *__buf;
+#endif
+};
+
 void ipc_systemv_sem(int argc, char *argv[]);
 
 #endif /* IPC_FUNC_H_ */
