@@ -4,8 +4,9 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../ipc_fifo_client.c \
+../ipc_fifo_server.c \
 ../ipc_pipe.c \
+../ipc_systemv_msg_server.c \
 ../main.c \
 ../pthread_cancellation.c \
 ../pthread_condition_variable.c \
@@ -15,8 +16,9 @@ C_SRCS += \
 ../pthread_sync.c 
 
 OBJS += \
-./ipc_fifo_client.o \
+./ipc_fifo_server.o \
 ./ipc_pipe.o \
+./ipc_systemv_msg_server.o \
 ./main.o \
 ./pthread_cancellation.o \
 ./pthread_condition_variable.o \
@@ -26,8 +28,9 @@ OBJS += \
 ./pthread_sync.o 
 
 C_DEPS += \
-./ipc_fifo_client.d \
+./ipc_fifo_server.d \
 ./ipc_pipe.d \
+./ipc_systemv_msg_server.d \
 ./main.d \
 ./pthread_cancellation.d \
 ./pthread_condition_variable.d \
