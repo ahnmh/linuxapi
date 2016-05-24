@@ -21,7 +21,8 @@ int main(int argc, char *argv[])
 //	ipc_pipe_stdinout();
 //	ipc_pipe_popen();
 //	ipc_fifo_server();
-	ipc_systemv_msg_server();
+//	ipc_systemv_msg_server();
+	ipc_systemv_sem();
 
 	return 0;
 }

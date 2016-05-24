@@ -8,6 +8,7 @@
 #ifndef IPC_FUNC_H_
 #define IPC_FUNC_H_
 
+#include <sys/types.h>
 #include "tlpi_hdr.h"
 
 void ipc_pipe(int argc, char *argv[]);
@@ -15,7 +16,6 @@ void ipc_pipe_stdinout();
 void ipc_pipe_popen();
 
 
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #define SERVER_FIFO "/tmp/fifo_server"
@@ -40,5 +40,9 @@ struct msgbuf {
 };
 void ipc_systemv_msg_server();
 void ipc_systemv_msg_client();
+
+
+#include <sys/sem.h>
+void ipc_systemv_sem(int argc, char *argv[]);
 
 #endif /* IPC_FUNC_H_ */
