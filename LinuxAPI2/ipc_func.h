@@ -53,6 +53,6 @@ union semun {
 #endif
 };
 
-void ipc_systemv_sem(int argc, char *argv[]);
+void ipc_systemv_sem();
 
 #endif /* IPC_FUNC_H_ */
