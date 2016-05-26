@@ -55,4 +55,24 @@ union semun {
 
 void ipc_systemv_sem();
 
+
+#include <sys/shm.h>
+
+#define WRITE_SEM 0
+#define READ_SEM 1
+#define BUF_SIZE 1024
+
+#define SEM_KEY 0x1000
+#define SHM_KEY 0x1001
+
+#define OBJ_PERMS (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP)
+
+struct shmmsg {
+	int cnt;
+	char buf[BUF_SIZE];
+};
+
+void ipc_systemv_shm_writer();
+void ipc_systemv_shm_reader();
+
 #endif /* IPC_FUNC_H_ */
