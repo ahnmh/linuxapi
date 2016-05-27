@@ -8,7 +8,7 @@
 #include "pthread_func.h"
 #include "pthread_func.h"
 #include "ipc_func.h"
-
+#include "mmap_func.h"
 int main(int argc, char *argv[])
 {
 //	pthread_introduce();
@@ -23,7 +23,8 @@ int main(int argc, char *argv[])
 //	ipc_fifo_server();
 //	ipc_systemv_msg_server();
 //	ipc_systemv_sem();
-	ipc_systemv_shm_writer();
+//	ipc_systemv_shm_writer();
+	mmap_func();
 
 	return 0;
 }
