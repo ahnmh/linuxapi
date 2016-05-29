@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
 //	ipc_systemv_shm_writer();
 //	mmap_file_privated(argc, argv);
 //	mmap_file_shared(argc, argv);;
-	mmap_anonymous_shared();
+//	mmap_anonymous_shared();
+	mmap_ops();
+
 	return 0;
 }

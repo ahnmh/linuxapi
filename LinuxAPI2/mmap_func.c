@@ -118,6 +118,7 @@ void mmap_anonymous_shared()
 /*
 	MAP_ANONYMOUS인 경우 파일이 필요하지 않으며 파일 디스크립터는 -1로 지정한다.
 	매핑된 파일은 모두 0으로 초기화된다.
+	실제로는 /dev/zero를 상대로 매핑하는 것이며 /dev/zero는 0을 돌려주는 가상 디바이스임.
 */
 	shared = mmap(NULL, sizeof(int), PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 	if(shared == MAP_FAILED)
@@ -147,5 +148,38 @@ void mmap_anonymous_shared()
 		exit(EXIT_SUCCESS);
 
 	}
+}
+
+#define LEN	1024
+#define SHELL_FMT	"cat /proc/%ld/maps | grep zero"
+#define CMD_SIZE	(sizeof(SHELL_FMT) + 20)
+void mmap_ops()
+{
+	char cmd[CMD_SIZE];
+	char *addr;
+	addr = mmap(NULL, LEN, PROT_NONE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	if (addr == MAP_FAILED)
+		errExit("mmap()");
+
+	// 여기서 접근하면 SIGSEGV가 발생함.
+//	strcpy(addr, "test");
+	// 보호모드 수정 전 매핑 메모리 정보 확인
+	snprintf(cmd, CMD_SIZE, SHELL_FMT, (long)getpid());
+	system(cmd);
+
+	if (mprotect(addr, LEN, PROT_READ | PROT_WRITE) == -1)
+		errExit("mprotect()");
+
+	// 보호모드 수정 후 매핑 메모리 정보 확인
+	snprintf(cmd, CMD_SIZE, SHELL_FMT, (long)getpid());
+	system(cmd);
+
+	// 가상 메모리의 내용을 물리 메모리에 고정
+	if (mlock(addr, LEN) == -1)
+		errExit("mlock()");
+
+	// 가상 메모리의 내용을 페이지 아웃 가능하게 함.
+	if (munlock(addr, LEN) == -1)
+		errExit("munlock()");
 
 }

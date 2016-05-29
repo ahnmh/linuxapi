@@ -3,10 +3,6 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
-O_SRCS += \
-../error/error_functions.o \
-../error/get_num.o 
-
 C_SRCS += \
 ../error/error_functions.c \
 ../error/get_num.c 
