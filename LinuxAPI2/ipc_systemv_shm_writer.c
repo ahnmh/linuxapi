@@ -5,7 +5,7 @@
  *      Author: ahnmh
  */
 
-#include "ipc_func.h"
+#include "ipc_systemv_func.h"
 
 /* 시스템 V 공유 메모리
  * 공유 메모리는 둘 이상의 프로세스 간의 동일한 메모리 페이지를 공유하도록 지원한다.

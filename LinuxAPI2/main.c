@@ -6,9 +6,9 @@
  */
 
 #include "pthread_func.h"
-#include "pthread_func.h"
-#include "ipc_func.h"
+#include "ipc_systemv_func.h"
 #include "mmap_func.h"
+#include "ipc_posix_func.h"
 
 int main(int argc, char *argv[])
 {
@@ -28,9 +28,9 @@ int main(int argc, char *argv[])
 //	mmap_file_privated(argc, argv);
 //	mmap_file_shared(argc, argv);;
 //	mmap_anonymous_shared();
-	mmap_ops();
-	
-	//test
+//	mmap_ops();
+//	ipc_posix_mq_write();
+	ipc_posix_mq_read();
 
 	return 0;
 }

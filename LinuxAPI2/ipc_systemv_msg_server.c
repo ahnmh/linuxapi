@@ -6,7 +6,8 @@
  */
 
 #include <stdio.h>
-#include "ipc_func.h"
+
+#include "ipc_systemv_func.h"
 
 
 /* 시스템V 메시지큐 예제

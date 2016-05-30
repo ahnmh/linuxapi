@@ -5,7 +5,7 @@
  *      Author: ahnmh
  */
 
-#include "ipc_func.h"
+#include "ipc_systemv_func.h"
 
 
 /* 시스템V 세마포어 예제

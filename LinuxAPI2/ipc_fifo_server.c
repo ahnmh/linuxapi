@@ -4,7 +4,8 @@
 
 #include <stdio.h>
 #include <signal.h>
-#include "ipc_func.h"
+
+#include "ipc_systemv_func.h"
 
 /*
 FIFO 서버
