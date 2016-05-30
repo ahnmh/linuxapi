@@ -29,6 +29,8 @@ int main(int argc, char *argv[])
 //	mmap_file_shared(argc, argv);;
 //	mmap_anonymous_shared();
 	mmap_ops();
+	
+	//test
 
 	return 0;
 }
