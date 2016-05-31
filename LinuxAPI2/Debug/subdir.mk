@@ -6,6 +6,7 @@
 C_SRCS += \
 ../ipc_fifo_server.c \
 ../ipc_pipe.c \
+../ipc_posix_mq.c \
 ../ipc_systemv_msg_server.c \
 ../ipc_systemv_sem.c \
 ../ipc_systemv_shm_writer.c \
@@ -21,6 +22,7 @@ C_SRCS += \
 OBJS += \
 ./ipc_fifo_server.o \
 ./ipc_pipe.o \
+./ipc_posix_mq.o \
 ./ipc_systemv_msg_server.o \
 ./ipc_systemv_sem.o \
 ./ipc_systemv_shm_writer.o \
@@ -36,6 +38,7 @@ OBJS += \
 C_DEPS += \
 ./ipc_fifo_server.d \
 ./ipc_pipe.d \
+./ipc_posix_mq.d \
 ./ipc_systemv_msg_server.d \
 ./ipc_systemv_sem.d \
 ./ipc_systemv_shm_writer.d \

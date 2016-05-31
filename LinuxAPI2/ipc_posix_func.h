@@ -18,7 +18,17 @@ struct mq_message {
 	char name[100];
 };
 
+void ipc_posix_mq_create();
 void ipc_posix_mq_write();
 void ipc_posix_mq_read();
+void ipc_posix_mq_read_by_signal();
+void ipc_posix_mq_read_by_thread();
+void ipc_posix_mq_destroy();
+
+#define POSIX_SEM "posix_semaphore"
+void ipc_posix_sem_create();
+void ipc_posix_sem_acquire();
+void ipc_posix_sem_release();
+void ipc_posix_sem_destroy();
 
 #endif /* IPC_POSIX_FUNC_H_ */
