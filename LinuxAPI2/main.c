@@ -30,27 +30,45 @@ int main(int argc, char *argv[])
 //	mmap_anonymous_shared();m
 //	mmap_ops();
 
+//	if(argc != 2)
+//		errExit("Not enough argument\n");
+//
+//	switch(getopt(argc, argv, "cwrntd")) {
+//	case 'c':
+//		ipc_posix_mq_create();
+//		break;
+//	case 'w':
+//		ipc_posix_mq_write();
+//		break;
+//	case 'r':
+//		ipc_posix_mq_read();
+//		break;
+//	case 'n':
+//		ipc_posix_mq_read_by_signal();
+//		break;
+//	case 't':
+//		ipc_posix_mq_read_by_thread();
+//		break;
+//	case 'd':
+//		ipc_posix_mq_destroy();
+//		break;
+//	}
+
 	if(argc != 2)
 		errExit("Not enough argument\n");
 
-	switch(getopt(argc, argv, "cwrntd")) {
+	switch(getopt(argc, argv, "card")) {
 	case 'c':
-		ipc_posix_mq_create();
+		ipc_posix_sem_create();
 		break;
-	case 'w':
-		ipc_posix_mq_write();
+	case 'a':
+		ipc_posix_sem_acquire();
 		break;
 	case 'r':
-		ipc_posix_mq_read();
-		break;
-	case 'n':
-		ipc_posix_mq_read_by_signal();
-		break;
-	case 't':
-		ipc_posix_mq_read_by_thread();
+		ipc_posix_sem_release();
 		break;
 	case 'd':
-		ipc_posix_mq_destroy();
+		ipc_posix_sem_destroy();
 		break;
 	}
 
