@@ -95,7 +95,7 @@ void pthread_sync_error_checking_mutex()
 	s = pthread_mutexattr_init(&mtx_attr);
 /*
 	뮤텍스 타입으로 PTHREAD_MUTEX_ERRORCHECK를 사용 :
-	잘못된 뮤텍스 사용시 에러를 리턴함. 일반 뮤텍스보다 느리지만 어디서 뮤텍스 사용 규칙을 위한하는지 알 수 있다.
+	잘못된 뮤텍스 사용시 에러를 리턴함. 일반 뮤텍스보다 느리지만 어디서 뮤텍스 사용 규칙을 위반하는지 알 수 있다.
 */
 	s = pthread_mutexattr_settype(&mtx_attr, PTHREAD_MUTEX_ERRORCHECK);
 
@@ -103,7 +103,7 @@ void pthread_sync_error_checking_mutex()
 
 	param p1, p2;
 
-	// 2개의 스레드가 같은 mutex(메인 스레드의 지 변수로 선언된)를 사용
+	// 2개의 스레드가 같은 mutex(메인 스레드의 지역 변수로 선언된)를 사용
 	p1.mtx = &mtx;
 	p1.start = 0;
 	s = pthread_create(&t1, NULL, thread_func_error_checking_mutex, &p1);

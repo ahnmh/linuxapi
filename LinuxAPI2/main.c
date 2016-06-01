@@ -54,23 +54,28 @@ int main(int argc, char *argv[])
 //		break;
 //	}
 
-	if(argc != 2)
-		errExit("Not enough argument\n");
+//	if(argc != 2)
+//		errExit("Not enough argument\n");
+//
+//	switch(getopt(argc, argv, "card")) {
+//	case 'c':
+//		ipc_posix_sem_create();
+//		break;
+//	case 'a':
+//		ipc_posix_sem_acquire();
+//		break;
+//	case 'r':
+//		ipc_posix_sem_release();
+//		break;
+//	case 'd':
+//		ipc_posix_sem_destroy();
+//		break;
+//	}
 
-	switch(getopt(argc, argv, "card")) {
-	case 'c':
-		ipc_posix_sem_create();
-		break;
-	case 'a':
-		ipc_posix_sem_acquire();
-		break;
-	case 'r':
-		ipc_posix_sem_release();
-		break;
-	case 'd':
-		ipc_posix_sem_destroy();
-		break;
-	}
+	ipc_posix_unnamed_sem();
 
 	return 0;
 }
+
+//test
+
