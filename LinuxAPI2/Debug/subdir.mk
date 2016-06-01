@@ -8,6 +8,7 @@ C_SRCS += \
 ../ipc_pipe.c \
 ../ipc_posix_mq.c \
 ../ipc_posix_sem.c \
+../ipc_posix_shm.c \
 ../ipc_posix_unnamed_sem.c \
 ../ipc_systemv_msg_server.c \
 ../ipc_systemv_sem.c \
@@ -26,6 +27,7 @@ OBJS += \
 ./ipc_pipe.o \
 ./ipc_posix_mq.o \
 ./ipc_posix_sem.o \
+./ipc_posix_shm.o \
 ./ipc_posix_unnamed_sem.o \
 ./ipc_systemv_msg_server.o \
 ./ipc_systemv_sem.o \
@@ -44,6 +46,7 @@ C_DEPS += \
 ./ipc_pipe.d \
 ./ipc_posix_mq.d \
 ./ipc_posix_sem.d \
+./ipc_posix_shm.d \
 ./ipc_posix_unnamed_sem.d \
 ./ipc_systemv_msg_server.d \
 ./ipc_systemv_sem.d \

@@ -33,4 +33,9 @@ void ipc_posix_sem_destroy();
 
 void ipc_posix_unnamed_sem();
 
+#define POSIX_SHM "/posix_shared_memory"
+void ipc_posix_shm_write();
+void ipc_posix_shm_read();
+void ipc_posix_shm_destroy();
+
 #endif /* IPC_POSIX_FUNC_H_ */

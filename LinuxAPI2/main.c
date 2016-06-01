@@ -72,7 +72,22 @@ int main(int argc, char *argv[])
 //		break;
 //	}
 
-	ipc_posix_unnamed_sem();
+//	ipc_posix_unnamed_sem();
+
+	if(argc != 2)
+		errExit("Not enough argument\n");
+
+	switch(getopt(argc, argv, "wrd")) {
+	case 'w':
+		ipc_posix_shm_write();
+		break;
+	case 'r':
+		ipc_posix_shm_read();
+		break;
+	case 'd':
+		ipc_posix_shm_destroy();
+		break;
+	}
 
 	return 0;
 }
