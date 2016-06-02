@@ -66,7 +66,10 @@ void file_lock_flock(int argc, char *argv[])
 
 
 
-// 파일의 특정 위치에 대해서 잠금을 get / set 하는 함수
+/*
+파일의 특정 위치에 대해서 잠금을 get / set 하는 함수
+fcntl() 함수를 사용하면 파일의 일부분을 잠글 수 있다.
+*/
 static int lock_region(int fd, int cmd, int type, int whence, int start,
 		int len)
 {
