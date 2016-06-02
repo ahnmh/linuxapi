@@ -9,6 +9,7 @@
 #include "ipc_systemv_func.h"
 #include "mmap_func.h"
 #include "ipc_posix_func.h"
+#include "file_lock.h"
 
 int main(int argc, char *argv[])
 {
@@ -74,23 +75,24 @@ int main(int argc, char *argv[])
 
 //	ipc_posix_unnamed_sem();
 
-	if(argc != 2)
-		errExit("Not enough argument\n");
+//	if(argc != 2)
+//		errExit("Not enough argument\n");
+//
+//	switch(getopt(argc, argv, "wrd")) {
+//	case 'w':
+//		ipc_posix_shm_write();
+//		break;
+//	case 'r':
+//		ipc_posix_shm_read();
+//		break;
+//	case 'd':
+//		ipc_posix_shm_destroy();
+//		break;
+//	}
 
-	switch(getopt(argc, argv, "wrd")) {
-	case 'w':
-		ipc_posix_shm_write();
-		break;
-	case 'r':
-		ipc_posix_shm_read();
-		break;
-	case 'd':
-		ipc_posix_shm_destroy();
-		break;
-	}
+//	file_lock_flock(argc, argv);
+	file_lock_fcntl(argc, argv);
+
 
 	return 0;
 }
-
-//test
-

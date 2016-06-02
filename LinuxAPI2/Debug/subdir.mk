@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../file_lock_flock.c \
 ../ipc_fifo_server.c \
 ../ipc_pipe.c \
 ../ipc_posix_mq.c \
@@ -23,6 +24,7 @@ C_SRCS += \
 ../pthread_sync.c 
 
 OBJS += \
+./file_lock_flock.o \
 ./ipc_fifo_server.o \
 ./ipc_pipe.o \
 ./ipc_posix_mq.o \
@@ -42,6 +44,7 @@ OBJS += \
 ./pthread_sync.o 
 
 C_DEPS += \
+./file_lock_flock.d \
 ./ipc_fifo_server.d \
 ./ipc_pipe.d \
 ./ipc_posix_mq.d \
