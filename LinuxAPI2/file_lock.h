@@ -9,7 +9,7 @@
 #define FILE_LOCK_H_
 
 void file_lock_flock(int argc, char *argv[]);
-void file_lock_fcntl(int argc, char *argv[]);
+void file_lock_region(int argc, char *argv[]);
 
 
 #endif /* FILE_LOCK_H_ */

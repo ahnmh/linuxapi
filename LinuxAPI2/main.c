@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 //	}
 
 //	file_lock_flock(argc, argv);
-	file_lock_fcntl(argc, argv);
+	file_lock_region(argc, argv);
 
 
 	return 0;

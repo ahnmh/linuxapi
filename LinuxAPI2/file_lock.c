@@ -64,8 +64,105 @@ void file_lock_flock(int argc, char *argv[])
 		errExit("flock()");
 }
 
-void file_lock_fcntl(int argc, char *argv[])
+
+
+// 파일의 특정 위치에 대해서 잠금을 get / set 하는 함수
+static int lock_region(int fd, int cmd, int type, int whence, int start,
+		int len)
 {
+	struct flock fl;
+
+	fl.l_type = type;
+	fl.l_whence = whence;
+	fl.l_start = start;
+	fl.l_len = len;
+
+	return fcntl(fd, cmd, &fl);
+}
+
+// 지정한 파일 영역에 대해 비블록킹 모드로 잠근다.
+int lock_region_nblock(int fd, int type, int whence, int start, int len)
+{
+	return lock_region(fd, F_SETLK, type, whence, start, len);
+}
+
+// 지정한 파일 영역에 대해 블록킹 모드로 잠근다.
+int lock_region_block(int fd, int type, int whence, int start, int len)
+{
+	return lock_region(fd, F_SETLKW, type, whence, start, len);
+}
+
+// 지정한 영역이 Lock 상태이면 해당 Lock을 보유중인 PID를 리턴하고 아니면 0을 리턴함.
+pid_t lock_region_is_locked(int fd, int type, int whence, int start, int len)
+{
+	struct flock fl;
+
+	fl.l_type = type;
+	fl.l_whence = whence;
+	fl.l_start = start;
+	fl.l_len = len;
+
+	if (fcntl(fd, F_GETLK, &fl) == -1)
+		return -1;
+
+	return (fl.l_type == F_UNLCK) ? 0 : fl.l_pid;
+
+}
+
+// ./LinuxAPI2 -w (b or n) 0 10
+void file_lock_region(int argc, char *argv[])
+{
+	int fd;
+	const char *file = "sample";
+
+	fd = open(file, O_RDWR);
+	if(fd == -1)
+		errExit("open()");
+
+	int start, len;
+	start = strtol(argv[3], NULL, 10);
+	len = strtol(argv[4], NULL, 10);
+	pid_t pid;
+
+	switch(getopt(argc, argv, "w:r:")) {
+	case 'w':
+		pid = lock_region_is_locked(fd, F_WRLCK, SEEK_SET, start, len);
+		if(!pid)
+			printf("region is free now.\n");
+		else
+			printf("region is locked by pid = %d.\n", pid);
+
+		if(strcmp(optarg, "b") == 0) {
+			lock_region_block(fd, F_WRLCK, SEEK_SET, start, len);
+			printf("region was locked!\n");
+		}
+		else if(strcmp(optarg, "n") == 0) {
+			lock_region_nblock(fd, F_WRLCK, SEEK_SET, start, len);
+			if(errno == EAGAIN)
+				errExit("region was locked by others.\n");
+
+		}
+		break;
+	case 'r':
+		pid = lock_region_is_locked(fd, F_RDLCK, SEEK_SET, start, len);
+		if(!pid)
+			printf("region is free now.\n");
+		else
+			printf("region is locked by pid = %d.\n", pid);
+
+		if(strcmp(optarg, "b") == 0) {
+			lock_region_block(fd, F_RDLCK, SEEK_SET, start, len);
+			printf("region was locked!\n");
+		}
+		else if(strcmp(optarg, "n") == 0) {
+			lock_region_nblock(fd, F_RDLCK, SEEK_SET, start, len);
+			if(errno == EAGAIN)
+				errExit("region was locked by others.\n");
+		}
+		break;
+	}
+
+	pause();
 
 }
 
