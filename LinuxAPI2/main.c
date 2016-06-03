@@ -10,6 +10,7 @@
 #include "mmap_func.h"
 #include "ipc_posix_func.h"
 #include "file_lock.h"
+#include "socket_unix_domain.h"
 
 int main(int argc, char *argv[])
 {
@@ -31,9 +32,6 @@ int main(int argc, char *argv[])
 //	mmap_anonymous_shared();m
 //	mmap_ops();
 
-//	if(argc != 2)
-//		errExit("Not enough argument\n");
-//
 //	switch(getopt(argc, argv, "cwrntd")) {
 //	case 'c':
 //		ipc_posix_mq_create();
@@ -55,9 +53,6 @@ int main(int argc, char *argv[])
 //		break;
 //	}
 
-//	if(argc != 2)
-//		errExit("Not enough argument\n");
-//
 //	switch(getopt(argc, argv, "card")) {
 //	case 'c':
 //		ipc_posix_sem_create();
@@ -75,9 +70,6 @@ int main(int argc, char *argv[])
 
 //	ipc_posix_unnamed_sem();
 
-//	if(argc != 2)
-//		errExit("Not enough argument\n");
-//
 //	switch(getopt(argc, argv, "wrd")) {
 //	case 'w':
 //		ipc_posix_shm_write();
@@ -91,7 +83,16 @@ int main(int argc, char *argv[])
 //	}
 
 //	file_lock_flock(argc, argv);
-	file_lock_region(argc, argv);
+//	file_lock_region(argc, argv);
+
+	switch(getopt(argc, argv, "sc")) {
+	case 's':
+		socket_unix_domain_stream_server();
+		break;
+	case 'c':
+		socket_unix_domain_stream_client();
+		break;
+	}
 
 
 	return 0;

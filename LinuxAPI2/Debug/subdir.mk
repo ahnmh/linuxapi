@@ -21,7 +21,8 @@ C_SRCS += \
 ../pthread_introduce.c \
 ../pthread_safe.c \
 ../pthread_signal.c \
-../pthread_sync.c 
+../pthread_sync.c \
+../socket_unix_domain.c 
 
 OBJS += \
 ./file_lock.o \
@@ -41,7 +42,8 @@ OBJS += \
 ./pthread_introduce.o \
 ./pthread_safe.o \
 ./pthread_signal.o \
-./pthread_sync.o 
+./pthread_sync.o \
+./socket_unix_domain.o 
 
 C_DEPS += \
 ./file_lock.d \
@@ -61,7 +63,8 @@ C_DEPS += \
 ./pthread_introduce.d \
 ./pthread_safe.d \
 ./pthread_signal.d \
-./pthread_sync.d 
+./pthread_sync.d \
+./socket_unix_domain.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
