@@ -5,11 +5,11 @@
  *      Author: ahnmh
  */
 
-#include "pthread_func.h"
-#include "ipc_systemv_func.h"
-#include "mmap_func.h"
-#include "ipc_posix_func.h"
-#include "file_lock.h"
+//#include "pthread_func.h"
+//#include "ipc_systemv_func.h"
+//#include "mmap_func.h"
+//#include "ipc_posix_func.h"
+//#include "file_lock.h"
 #include "socket_unix_domain.h"
 
 int main(int argc, char *argv[])
@@ -85,15 +85,17 @@ int main(int argc, char *argv[])
 //	file_lock_flock(argc, argv);
 //	file_lock_region(argc, argv);
 
-	switch(getopt(argc, argv, "sc")) {
-	case 's':
-		socket_unix_domain_stream_server();
-		break;
-	case 'c':
-		socket_unix_domain_stream_client();
-		break;
-	}
-
+//	switch(getopt(argc, argv, "sc")) {
+//	case 's':
+////		socket_unix_domain_stream_server();
+//		socket_unix_domain_datagram_server();
+//		break;
+//	case 'c':
+////		socket_unix_domain_stream_client();
+//		socket_unix_domain_datagram_client();
+//		break;
+//	}
+	socket_pair_sample(argc, argv);
 
 	return 0;
 }
