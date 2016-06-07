@@ -10,7 +10,8 @@
 //#include "mmap_func.h"
 //#include "ipc_posix_func.h"
 //#include "file_lock.h"
-#include "socket_unix_domain.h"
+//#include "socket_unix_domain.h"
+#include "socket_inet_domain.h"
 
 int main(int argc, char *argv[])
 {
@@ -95,7 +96,22 @@ int main(int argc, char *argv[])
 //		socket_unix_domain_datagram_client();
 //		break;
 //	}
-	socket_pair_sample(argc, argv);
+
+//	socket_pair_sample(argc, argv);
+
+	switch(getopt(argc, argv, "sc")) {
+	case 's':
+//		socket_inet_domain_stream_server();
+//		socket_inet_domain_datagram_server();
+		socket_inet_domain_stream_server_v2();
+		break;
+	case 'c':
+//		socket_inet_domain_stream_client();
+//		socket_inet_domain_datagram_client();
+		socket_inet_domain_stream_client();
+		break;
+	}
+
 
 	return 0;
 }
