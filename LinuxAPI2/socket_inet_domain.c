@@ -163,7 +163,7 @@ void socket_inet_domain_datagram_server()
 
 void socket_inet_domain_datagram_client()
 {
-	struct sockaddr_in server_addr, client_addr;
+	struct sockaddr_in server_addr;
 	int socket_fd;
 	ssize_t numbytes;
 	char buf[BUF_SIZE];
@@ -228,21 +228,42 @@ void socket_inet_domain_stream_server_v2()
 	ssize_t numread;
 	char buf[BUF_SIZE];
 
+/*
+	getaddrinfo
+	: 호스트 주소("www.naver.com")와 서비스명("http")을 통해 IP주소와 포트 번호를 포함하는 소켓 주소 구조체 리스트를 리턴함.
+	: sockaddr구조체를 포함하여 소켓을 생성하고 bind하는데 필요한 정보를 한번에 리턴한다.
+	: 프로토콜 독립적이다.(IPv4, IPv6 모두 사용 가능함)
+	: addrinfo 구조체의 링크드 리스트를 동적으로 할당하고 result가 리스트의 시작 부분을 가르키도록 설정함.
+	: 인자 host, service, hints에 해당하는 호스트와 서비스 조합은 여러 개가 될 수 있으므로 result는 여러 구조체를 포함하는 리스트를 리턴함.
+	: 호스트 주소가 숫자 형식의 문자열이 아닌 경우, DNS를 거치므로 오래 걸릴 수 있다.
+	: 서비스명은 /etc/services 파일을 참조하여 매핑된 포트 번호를 얻는데 사용한다.
+	 (특정 포트에 대해 TCP, UDP가 모두 서비스 가능한 경우.. /etc/services 참조)
+	: 파라미터
+		1. host 주소 문자열("www.naver.com" 또는 "X.X.X.X")
+		2. service 포트 문자열("http", "ftp", 또는 "50000")
+		3. hints : addrinfo 리스트 중에서 hints로 지정된 값을 보유하고 있는 아이템을 선택적으로 리턴한다.
+					아래의 경우, 리스트 중 ai_sockettype = SOCK_STREAM인 소켓, ai_family = AF_UNSPEC(IPv4, IPv6)모두 가능한 소켓을 의미함.
+*/
 	struct addrinfo hint, *result, *rp;
 	memset(&hint, 0, sizeof(struct addrinfo));
 	hint.ai_canonname = NULL;
 	hint.ai_addr = NULL; // socaddr* 타입
 	hint.ai_next = NULL;
-	hint.ai_socktype = SOCK_STREAM;
+	hint.ai_socktype = SOCK_STREAM; // TCP
 	hint.ai_family = AF_UNSPEC; // IPv4, IPv6 모두 가능
-	hint.ai_flags = AI_PASSIVE | AI_NUMERICSERV; // wildcard 주소, 포트 번호는 int 형태로 받음.
+	// AI_PASSIVE = getaddrinfo 함수가 wildcard 주소(기다리는 소켓)
+	// AI_NUMERICSERV = 포트 번호는 숫자 문자열 형태("50000")로 받음. 아닌 경우, "http", "ftp"와 같이 지정한다.
+	hint.ai_flags = AI_PASSIVE | AI_NUMERICSERV;
+
+	// AI_PASSIVE(wildcard 주소)인 경우 host는 NULL로 지정한다.
 	if(getaddrinfo(NULL, CH_PORT_NUMBER, &hint, &result) != 0)
 		errExit("getaddrinfo()");
 
+	// 소켓을 성공적으로 생성하고 bind할 수 있는 주소 구조체가 나올때까지 리턴된 리스트를 검색한다.
 	for(rp = result; rp != NULL; rp = rp->ai_next) {
 		server_fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
 		if(server_fd == -1)
-			errExit("socket()");
+			continue;
 
 		if(bind(server_fd, rp->ai_addr, rp->ai_addrlen) == 0)
 			break;
@@ -250,9 +271,13 @@ void socket_inet_domain_stream_server_v2()
 		close(server_fd);
 	}
 
+/*	나머지 부분은 기존 코드와 동일함.
+ * */
+
 	if(listen(server_fd, BACKLOG) == -1)
 		errExit("listen()");
 
+	// getaddrinfo는 addrinfo 구조체를 동적 할당하므로 해제하는 함수 호출이 필요함.
 	freeaddrinfo(result);
 
 	while(1) {
@@ -261,10 +286,21 @@ void socket_inet_domain_stream_server_v2()
 		if(client_fd == -1)
 			errExit("accept()");
 
-		char ch_client_addr[INET_ADDRSTRLEN];
-		if(inet_ntop(AF_INET, &client_addr.sin_addr, ch_client_addr, INET_ADDRSTRLEN) == NULL)
-			fatal("inet_ntop()");
-		printf("client address = %s, port = %d\n", ch_client_addr, client_addr.sin_port);
+/*
+		getnameinfo
+		: getaddrinfo와 반대되는 기능을 수행한다.
+		: 소켓 주소 구조체(IP주소와 포트 번호가 들어있음)를 받아서 호스트명("www.naver.com")과 서비스명 문자열("http", "ftp", ...)을 리턴한다.
+		: 필요없는 경우 둘 중 하나는 NULL로 지정가능.
+		: 소켓 주소 구조체는 accept, recvfrom, getsockname, getpeername 함수를 통해 얻는다.
+		: 해석할 수 없는 경우 그냥 숫자 주소("X.X.X.X")와 문자열("50000")을 그대로 리턴한다.
+		: flags 파라미터
+			NI_NUMERICHOST = 호스트 주소를 구할 때 DNS를 거치므로 오래 걸릴 수 있으므로 숫자 형식의 문자열("X.X.X.X")을 리턴하도록 강제함.
+			NI_NUMERICSERV = 숫자 포트 번호를 사용하도록 강제함. 따라서 서비스명을 구하기 위해 /etc/service 파일을 검색하지 않는다. 포트 번호가 서비스명에 대응하지 않는 경우 유용함.
+*/
+		char host[NI_MAXHOST]; // 클라이언트가 127.0.0.1인 경우 "localhost"가 리턴될 것임.
+		char service[NI_MAXSERV];
+		if(getnameinfo((struct sockaddr *)&client_addr, client_addr_size, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+			printf("client address = %s, port = %s\n", host, service);
 
 		while((numread = read(client_fd, buf, BUF_SIZE)) > 0)
 			if(write(STDOUT_FILENO, buf, numread) != numread)
@@ -275,4 +311,103 @@ void socket_inet_domain_stream_server_v2()
 
 		close(client_fd);
 	}
+}
+
+void socket_inet_domain_stream_client_v2()
+{
+	int socket_fd;
+	ssize_t numread;
+	char buf[BUF_SIZE];
+
+	struct addrinfo hint, *result, *rp;
+	memset(&hint, 0, sizeof(struct addrinfo));
+	hint.ai_canonname = NULL;
+	hint.ai_addr = NULL; // socaddr* 타입
+	hint.ai_next = NULL;
+	hint.ai_socktype = SOCK_STREAM; // TCP
+	hint.ai_family = AF_UNSPEC; // IPv4, IPv6 모두 가능
+	hint.ai_flags = AI_NUMERICSERV;
+
+	// getaddrinfo 함수를 사용하여, 주소, 서비스 문자열을 통해 connect 할 수 있는 IP주소와 포트 번호를 얻어온다.
+	if(getaddrinfo("localhost", CH_PORT_NUMBER, &hint, &result) != 0)
+		errExit("getaddrinfo()");
+
+	// 소켓을 성공적으로 생성하고 connect할 수 있는 주소 구조체가 나올때까지 리턴된 리스트를 검색한다.
+	for(rp = result; rp != NULL; rp = rp->ai_next) {
+		socket_fd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
+		if(socket_fd == -1)
+			continue;
+		// "localhost" -> 127.0.0.1, "50002" -> 50002 의 값으로 rp->ai_addr로 구해지며 해당 값으로 connect 함.
+		if(connect(socket_fd, rp->ai_addr, rp->ai_addrlen) != -1)
+			break;
+
+		close(socket_fd);
+	}
+
+	freeaddrinfo(result);
+
+	// stdout으로부터 데이터를 읽는다.
+	while((numread = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
+		// 읽은 데이터를 소켓에 쓴다.
+		if(write(socket_fd, buf, numread) != numread)
+			fatal("write()");
+
+	if(numread == -1)
+//		errExit("read()");
+
+	close(socket_fd);
+}
+
+// 호스트 이름("www.naver.com")으로 IP를 구하는 gethostbyname 함수 호출 예제
+// IP주소를 통해 호스트 이름을 구하는 함수는 gethostbyaddr
+void gethostbyname_example(int argc, char *argv[])
+{
+	struct hostent *h;
+	h = gethostbyname(argv[1]); // "www.naver.com"
+	if(h == NULL) {
+		fprintf(stderr, "gethostbyname(): %s\n", hstrerror(h_errno));
+		errExit("gethostbyname()");
+	}
+
+	printf("canonical name = %s\n", h->h_name);
+
+	char **pa;
+	// alias는 h_aliases[0], h_aliases[1], ..가 각각 가르키는 곳에 저장되어 있고 h_aliases[n]이 NULL일때까지 여러개가 존재할 수 있다.
+	for(pa = h->h_aliases; *pa != NULL; pa++)
+		printf("alias = %s\n", *pa);
+
+	char **pp;
+	char str[INET_ADDRSTRLEN];
+	// IP주소는 h_addr_list[0], h_addr_list[1], ..가 각각 가르키는 곳에 저장되어 있고 h_addr_list[n]이 NULL일때까지 여러개가 존재할 수 있다.
+	// 포인터 크기는 8byte인 것에 주의할 것.
+	for(pp = h->h_addr_list; *pp != NULL; pp++) {
+/*
+		// inet_ntoa를 사용하는 예제. inet_ntop를 사용하는 것이 낫다.
+		struct in_addr *address = (struct in_addr *)*pp;
+		printf("address = %s\n", inet_ntoa(*address)); // 호스트의 공식 이름
+*/
+		// inet_ntop를 통해 문자열로 변환한다.
+		printf("address = %s\n", inet_ntop(h->h_addrtype, *pp, str, INET_ADDRSTRLEN)); // 호스트의 공식 이름
+	}
+}
+
+// 서비스명("http")으로 포트 번호를 구하는 getservbyname 함수 호출 예제
+// 포트 번호를 통해 서비스를 구하는 함수는 getservbyport
+void getservbyname_example(int argc, char *argv[])
+{
+	struct servent *s;
+	s = getservbyname(argv[1], NULL); // "http"
+	if(s == NULL) {
+		fprintf(stderr, "gethostbyname(): %s\n", hstrerror(h_errno));
+		errExit("gethostbyname()");
+	}
+
+	printf("service name = %s\n", s->s_name);
+
+	char **pa;
+	for(pa = s->s_aliases; *pa != NULL; pa++)
+		printf("alias = %s\n", *pa);
+
+	printf("port number = %d\n", ntohs(s->s_port));
+	printf("protocol = %s\n", s->s_proto);
 }
