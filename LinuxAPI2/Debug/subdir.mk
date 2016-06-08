@@ -22,6 +22,7 @@ C_SRCS += \
 ../pthread_safe.c \
 ../pthread_signal.c \
 ../pthread_sync.c \
+../socket_inet_domain.c \
 ../socket_unix_domain.c 
 
 OBJS += \
@@ -43,6 +44,7 @@ OBJS += \
 ./pthread_safe.o \
 ./pthread_signal.o \
 ./pthread_sync.o \
+./socket_inet_domain.o \
 ./socket_unix_domain.o 
 
 C_DEPS += \
@@ -64,6 +66,7 @@ C_DEPS += \
 ./pthread_safe.d \
 ./pthread_signal.d \
 ./pthread_sync.d \
+./socket_inet_domain.d \
 ./socket_unix_domain.d 
 
 
