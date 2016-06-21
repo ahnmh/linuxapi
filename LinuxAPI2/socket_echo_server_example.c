@@ -75,6 +75,8 @@ static int listener(char *service, int backlog)
 	if(getaddrinfo(NULL, service, &hint, &result) != 0)
 		errExit("getaddrinfo()");
 
+
+
 	// 소켓을 성공적으로 생성하고 bind할 수 있는 주소 구조체가 나올때까지 리턴된 리스트를 검색한다.
 	for(rp = result; rp != NULL; rp = rp->ai_next) {
 		lfd = socket(rp->ai_family, rp->ai_socktype, rp->ai_protocol);
@@ -89,6 +91,16 @@ static int listener(char *service, int backlog)
 		// 여기로 넘어오면 연결 실패. 다음 주소로 재시도
 		close(lfd);
 	}
+
+/*
+	현재 소켓 연결을 재사용 가능하도록 소켓 옵션을 변경한다.
+	SO_REUSEADDR를 적용하지 않으면, 서버를 시그널 등으로 강제 종료하는 경우(Ctrl + c)
+	일정 시간(timeout)동안 재연결이 불가능하게 됨.
+	대부분의 TCP 서버의 경우 해당 옵션을 사용함.
+*/
+	int optval;
+	if(setsockopt(lfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(int)) == -1)
+		errExit("setsockopt()");
 
 	if(listen(lfd, backlog) == -1)
 		errExit("listen()");

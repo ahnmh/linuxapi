@@ -13,6 +13,7 @@
 //#include "socket_unix_domain.h"
 #include "socket_inet_domain.h"
 #include "socket_echo.h"
+#include "io_select_sample.h"
 
 int main(int argc, char *argv[])
 {
@@ -116,14 +117,16 @@ int main(int argc, char *argv[])
 //	gethostbyname_example(argc, argv);
 //	getservbyname_example(argc, argv);
 
-	switch(getopt(argc, argv, "sc")) {
-	case 's':
-		socket_echo_server();
-		break;
-	case 'c':
-		socket_echo_client();
-		break;
-	}
+//	switch(getopt(argc, argv, "sc")) {
+//	case 's':
+//		socket_echo_server();
+//		break;
+//	case 'c':
+//		socket_echo_client();
+//		break;
+//	}
+
+	io_select_sample();
 
 	return 0;
 }
