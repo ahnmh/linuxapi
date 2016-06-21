@@ -22,6 +22,8 @@ C_SRCS += \
 ../pthread_safe.c \
 ../pthread_signal.c \
 ../pthread_sync.c \
+../socket_echo_client_example.c \
+../socket_echo_server_example.c \
 ../socket_inet_domain.c \
 ../socket_unix_domain.c 
 
@@ -44,6 +46,8 @@ OBJS += \
 ./pthread_safe.o \
 ./pthread_signal.o \
 ./pthread_sync.o \
+./socket_echo_client_example.o \
+./socket_echo_server_example.o \
 ./socket_inet_domain.o \
 ./socket_unix_domain.o 
 
@@ -66,6 +70,8 @@ C_DEPS += \
 ./pthread_safe.d \
 ./pthread_signal.d \
 ./pthread_sync.d \
+./socket_echo_client_example.d \
+./socket_echo_server_example.d \
 ./socket_inet_domain.d \
 ./socket_unix_domain.d 
 
@@ -74,7 +80,7 @@ C_DEPS += \
 %.o: ../%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I../error -O0 -g3 -Wall -c -pthread -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	gcc -I/home/ahnmh-vw/workspace/linuxapi/LinuxAPI2/error -O0 -g3 -Wall -c -pthread -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

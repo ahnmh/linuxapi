@@ -12,6 +12,7 @@
 //#include "file_lock.h"
 //#include "socket_unix_domain.h"
 #include "socket_inet_domain.h"
+#include "socket_echo.h"
 
 int main(int argc, char *argv[])
 {
@@ -62,11 +63,11 @@ int main(int argc, char *argv[])
 //		ipc_posix_sem_acquire();
 //		break;
 //	case 'r':
-//		ipc_posix_sem_release();
 //		break;
 //	case 'd':
 //		ipc_posix_sem_destroy();
 //		break;
+//		ipc_posix_sem_release();
 //	}
 
 //	ipc_posix_unnamed_sem();
@@ -113,8 +114,16 @@ int main(int argc, char *argv[])
 //	}
 
 //	gethostbyname_example(argc, argv);
-	getservbyname_example(argc, argv);
+//	getservbyname_example(argc, argv);
 
+	switch(getopt(argc, argv, "sc")) {
+	case 's':
+		socket_echo_server();
+		break;
+	case 'c':
+		socket_echo_client();
+		break;
+	}
 
 	return 0;
 }
