@@ -188,3 +188,64 @@ void alt_io_signal()
 	}
 
 }
+
+
+/*
+epoll API
+이벤트폴
+감시해야 하는 파일 디스크립터 수가 많을 때 select, poll에 비해 성능이 좋다.
+epoll API는 레벨 트리거, 에지 트리거 통지를 모두 지원한다.
+시그널 기반 I/O에 비해 시그널을 처리하는 복잡성이 없으며 어떤 종류의 이벤트를 감시할 것인지에 대한 유연성이 더 좋다.
+(시그널 기 I/O의 경우, 읽기 감지를 수행할 것인지, 쓰기 감지를 수행할 것인지 지정하는 부분이 없음)
+리눅스 전용
+파이프, FIFO, 소켓, POSIX 메시지 큐, 터미널, 디바이스를 감시할 수 있으나, 정규 파일의 디스크립터는 불가함.
+*/
+
+#include <sys/epoll.h>
+#define MAX_BUF 1000 // 한번의 read로 읽을 수 있는 최대 바이트 수
+#define FD_COUNT 2 // 감시 대상 파일 디스크립터(예제에서는 FIFO를 가르킴)의 수
+#define MAX_EVENTS 5 // epoll 호출을 통해 리턴할 수 있는 최대 이벤트 수
+
+void alt_io_epoll()
+{
+	int epfd; // epoll 인스턴스를 가르키는 파일 디스크립터.
+	int ready; // 발생한 이벤트 갯수
+	int fd; // 감시할 파일 디스크립터
+	int numopendfds;
+	int i;
+
+	struct epoll_event ev;
+	struct epoll_event evlist[MAX_EVENTS];
+	char buf[MAX_BUF];
+
+	// epoll 인스턴스 생성
+	// epoll 인스턴스는 감시할 파일 디스크립터 목록을 저장하고(관심 목록) I/O 수행 준비가 된 파일 디스크립터 목록을 알려준다.(준비 목록)
+	// 리턴되는 디스크립터는 epoll 인스턴스를 가르키는 디스크립터임.
+	// size: 감시할 예정인 파일 디스크립터의 수
+	epfd = epoll_create(2);
+
+	// 감시 대상 파일을 epoll에 지정한다.
+	char filename[6];
+	for (i = 0; i < FD_COUNT; ++i) {
+		sprintf(filename, "test%d", i);
+		fd = open(filename, O_RDONLY);
+
+		ev.events = EPOLLIN; // 감시 이벤트는 읽기 가능 여부
+		ev.data.fd = fd; // epoll_wait가 리턴될 때 해당 프로세스로 전달한 컨텍스트. 보통 이벤트가 발생한 파일 디스크립터를 지정한다.
+		// EPOLL_CTL_ADD: 파일 디스크립터 fd를 epoll 인스턴스 epfd의 관심 목록에 추가한다.
+		if(epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev) == -1)
+			errExit("epoll_ctl()");
+	}
+
+	numopendfds = 2;
+	while(numopendfds > 0) {
+		//
+		ready = epoll_wait(epfd, evlist, MAX_EVENTS, -1);
+	}
+
+
+
+
+
+
+}

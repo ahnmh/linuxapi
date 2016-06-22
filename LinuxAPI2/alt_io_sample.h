@@ -11,5 +11,6 @@
 void alt_io_select();
 void alt_io_poll();
 void alt_io_signal();
+void alt_io_epoll();
 
 #endif /* ALT_IO_SAMPLE_H_ */
