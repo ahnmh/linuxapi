@@ -8,13 +8,21 @@
 #include <sys/time.h>
 #include <sys/select.h>
 #include "tlpi_hdr.h"
-#include <fcntl.h>
 
 /*
 select, poll
 레벨 트리거 통지 : 지정한 파일 디스크립터에 대해 I/O 시스템 호출이 가능한 경우 알림
 예를 들어, 파이프의 읽기 엔드포인트에 해당하는 디스크립터를 select나 poll이 감시하고 있는 상황에서 쓰기 엔드포인트에 데이터를 쓰면 select나 poll이 리턴된다.
 일반 파일, 터미널, 가상 터미널, 파이프, FIFO, 소켓, 몇몇 문자 관련 디바이스의 파일 디스크립터를 감시할 수 있다.
+주로 읽기와 쓰기 동작을 감시하는데,
+읽기의 경우 읽을 수 있는 데이터가 있는지,
+쓰기의 경우 쓸 수 있는 충분한 공간이 있는지에 대해 감시함.
+
+일반 파일의 파일 디스크립터는 항상 읽기와 쓰기가 가능한 상태로 간주(즉, select나 poll에 감시를 걸면
+블록되지 않고 항상 리턴됨) 되며 이유는 다음과 같다.
+- read를 호출하면 데이터, EOF, 에러 중 하나를 즉시 리턴한다.
+- write를 호출하면 즉시 데이터를 전송하거나 에러가 발생한다.
+
 */
 
 void alt_io_select()
@@ -49,6 +57,7 @@ void alt_io_select()
 	// FD_SET의 반대는 FD_CLR
 
 	// 지정한 입력, 출력, 예외 디스크립터(NULL) 집합중 I/O가 가능한 디스크립터가 발생하면 리턴한다.
+	// 파라미터로 전달되는 fd_set은 결과값이 기록되기 때문에 만일 select 함수를 재수행하려는 경우 fd_set을 리셋해야 한다.
 	ready = select(nfds, &readfds, &writefds, NULL, &timeout);
 	if (ready == -1)
 		errExit("select()");
@@ -56,7 +65,7 @@ void alt_io_select()
 	// select가 리턴했을 때 입력, 출력이 가능한 디스크립터 집합의 갯수
 	printf("ready = %d\n", ready);
 
-	// 디스크립터 번호와 가능한 I/O 속성 확
+	// 디스크립터 번호와 가능한 I/O 속성 확인
 	for (fd = 0; fd < nfds; fd++)
 		printf("%d: %s%s\n", fd, FD_ISSET(fd, &readfds) ? "r" : "", FD_ISSET(fd, &writefds) ? "w" : "");
 
@@ -114,4 +123,68 @@ void alt_io_poll()
 		errExit("ready()");
 
 	printf("poll() returned: %d\n", ready);
+}
+
+
+/*
+signal 기반 I/O
+에지 트리거 통지 : 파일 디스크립터에 I/O가 발생하면 커널이 시그널 SIGIO를 보냄.
+프로세스는 시그널이 전달되기 전까지 다른 job을 수행할 수 있게 된다.
+(시그널을 받으면 콜백 호출과 같이 구현하면 될 듯...)
+시그널 기반 I/O에서는 커널이 감시할 파일 디스크립터 목록을 기억할 수 있으므로 실제 I/O 이벤트가 발생했을 때만
+프로그램에 시그널을 발생시키므로 성능이 select, poll보다 좋다.
+*/
+
+#include <signal.h>
+#include <fcntl.h>
+#define BUF_SIZE 5
+static volatile sig_atomic_t got_sig_io = 0;
+
+
+static void sigio_handler(int sig)
+{
+	got_sig_io = 1;
+}
+
+void alt_io_signal()
+{
+	int flags;
+	struct sigaction sa;
+
+	// 시그널 핸들러 설치
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART; // 반드시 SA_RESTART 플래그를 설정하여 재시작되도록 해야 함.
+	sa.sa_handler = sigio_handler;
+	if (sigaction(SIGIO, &sa, NULL) == -1)
+		errExit("sigaction()");
+
+	// 지정한 파일 디스크립터의 I/O가 가능할 때 시그널을 수신할 파일 디스크립터의 소유자를 설정(일반적으로 호출 프로세스)
+	// 파일 디스크립터의 I/O가 준비되었다는 시그널을 하나의 프로세스 또는 프로세스 그룹의 모든 프로세스가 받도록 설정할 수 있다.
+	if (fcntl(STDIN_FILENO, F_SETOWN, getpid()) == -1)
+		errExit("fcntl()");
+
+	// 논블로킹 I/O를 활성화(O_NONBLOCK), 시그널 기반 I/O를 활성화(O_ASYNC)
+	flags = fcntl(STDIN_FILENO, F_GETFL);
+	if (fcntl(STDIN_FILENO, F_SETFL, flags | O_ASYNC | O_NONBLOCK) == -1)
+		errExit("fcntl()");
+
+	char buf[BUF_SIZE + 1];
+	while (1) {
+		sleep(1);
+		// SIGIO 시그널이 발생하면 시그널 핸들러에 의해 if 이하 진입
+		// stdin 디스크립터에 대해 동작하므로 입력창에 데이터를 쓰고 엔터를 누르는 순간에 해당함.
+		if (got_sig_io) {
+			got_sig_io = 0;
+
+			// 시그널 기반 I/O와 같이 에지 트리거 방식일 때, 다음 시그널이 발생하기전 모든 데이터를 읽어들여야 한다.
+			// 모두 읽어들이는 것을 시뮬레이션하기 위해 버퍼 사이즈를 고의로 적게 설정하여 여러번 read를 돌게함.
+			while (read(STDIN_FILENO, buf, BUF_SIZE) > 0) {
+				if(buf[0] == '\n')
+					break;
+				buf[5] = '\0';
+				printf("read = %s\n", buf);
+			}
+		}
+	}
+
 }

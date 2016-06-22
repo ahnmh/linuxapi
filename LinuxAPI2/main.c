@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 //	}
 
 //	alt_io_select();
-	alt_io_poll();
-
+//	alt_io_poll();
+	alt_io_signal();
 	return 0;
 }

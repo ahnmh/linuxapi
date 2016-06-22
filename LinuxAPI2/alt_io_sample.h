@@ -10,5 +10,6 @@
 
 void alt_io_select();
 void alt_io_poll();
+void alt_io_signal();
 
 #endif /* ALT_IO_SAMPLE_H_ */
