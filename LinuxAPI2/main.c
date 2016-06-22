@@ -13,7 +13,7 @@
 //#include "socket_unix_domain.h"
 #include "socket_inet_domain.h"
 #include "socket_echo.h"
-#include "io_select_sample.h"
+#include "alt_io_sample.h"
 
 int main(int argc, char *argv[])
 {
@@ -126,7 +126,8 @@ int main(int argc, char *argv[])
 //		break;
 //	}
 
-	io_select_sample();
+//	alt_io_select();
+	alt_io_poll();
 
 	return 0;
 }

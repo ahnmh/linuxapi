@@ -4,8 +4,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../alt_io_sample.c \
 ../file_lock.c \
-../io_select_sample.c \
 ../ipc_fifo_server.c \
 ../ipc_pipe.c \
 ../ipc_posix_mq.c \
@@ -29,8 +29,8 @@ C_SRCS += \
 ../socket_unix_domain.c 
 
 OBJS += \
+./alt_io_sample.o \
 ./file_lock.o \
-./io_select_sample.o \
 ./ipc_fifo_server.o \
 ./ipc_pipe.o \
 ./ipc_posix_mq.o \
@@ -54,8 +54,8 @@ OBJS += \
 ./socket_unix_domain.o 
 
 C_DEPS += \
+./alt_io_sample.d \
 ./file_lock.d \
-./io_select_sample.d \
 ./ipc_fifo_server.d \
 ./ipc_pipe.d \
 ./ipc_posix_mq.d \
