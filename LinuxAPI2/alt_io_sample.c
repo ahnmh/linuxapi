@@ -212,7 +212,6 @@ void alt_io_epoll()
 	int ready; // 발생한 이벤트 갯수
 	int fd; // 감시할 파일 디스크립터
 	int numopendfds;
-	int i;
 
 	struct epoll_event ev;
 	struct epoll_event evlist[MAX_EVENTS];
@@ -226,11 +225,21 @@ void alt_io_epoll()
 
 	// 감시 대상 파일을 epoll에 지정한다.
 	char filename[6];
-	for (i = 0; i < FD_COUNT; ++i) {
+	int i;
+	for (i = 1; i <= FD_COUNT; ++i) {
 		sprintf(filename, "test%d", i);
-		fd = open(filename, O_RDONLY);
 
-		ev.events = EPOLLIN; // 감시 이벤트는 읽기 가능 여부
+		// FIFO를 연다.
+		// 이 동작은 클라이언트가 FIFO가 O_WRONLY 모드로 open 할때까지(쓰기 endpoint가 생길때까지) 블록된다.
+		// 예를 들면 $ cat > test1 과 같은 명
+		// 이 샘플은 FIFO의 읽기 endpoint이므로 반드시 O_RDONLY 플래그를 사용해서 FIFO를 열어야 한다.
+		fd = open(filename, O_RDONLY);
+		if(fd == -1)
+			errExit("open()");
+		printf("Opened \"%s\" on fd %d\n", filename, fd);
+
+		// EPOLLET는 에지 트리거 방식으로 동작하도록 설정함.
+		ev.events = EPOLLIN/* | EPOLLET */; // 감시 이벤트는 읽기 가능 여부
 		ev.data.fd = fd; // epoll_wait가 리턴될 때 해당 프로세스로 전달한 컨텍스트. 보통 이벤트가 발생한 파일 디스크립터를 지정한다.
 		// EPOLL_CTL_ADD: 파일 디스크립터 fd를 epoll 인스턴스 epfd의 관심 목록에 추가한다.
 		if(epoll_ctl(epfd, EPOLL_CTL_ADD, fd, &ev) == -1)
@@ -239,13 +248,99 @@ void alt_io_epoll()
 
 	numopendfds = 2;
 	while(numopendfds > 0) {
-		//
+		// 이벤트 발생 대기
+		// 준비 상태인 파일 디스크립터 정보를 evlist로 리턴함.
+		// maxevents: evlist 배열의 갯수
+		// timeout: -1(무한대기)
+/*
+		epoll은 EPOLLET 플래그를 지정하지 않으면 기본적으로 레벨 트리거 방식으로 동작한다.
+		즉, 쓰기가 발생한 이후 read를 통해 읽어가지 않으면 epoll_wait는 항상 리턴된다.(레벨 트리거)
+		EPOLLET 플래그를 지정하면 read를 통해 읽어가지 않더라도 다음 쓰기가 발생할 때까지 블록된다.(에지 트리거)
+*/
 		ready = epoll_wait(epfd, evlist, MAX_EVENTS, -1);
+		if(ready == -1) {
+			if(errno == EINTR) // 시그널에 의해 인터럽트된 경우 재실행
+				continue;
+			else
+				errExit("epoll_wait()");
+		}
+
+		printf("ready = %d\n", ready);
+
+		// 리턴된 이벤트 확인
+		int j;
+		ssize_t numread;
+		for (j = 0; j < ready; ++j) {
+			printf("fd = %d, events: %s%s%s\n", evlist[j].data.fd,
+					(evlist[j].events & EPOLLIN) ? "EPOLLIN " : "",
+					(evlist[j].events & EPOLLHUP) ? "EPOLLHUP " : "",
+					(evlist[j].events & EPOLLERR) ? "EPOLLERR " : "");
+
+			// 읽기 가능 이벤트인 경우 읽기 시도
+			if(evlist[j].events & EPOLLIN) {
+				numread = read(evlist[j].data.fd, buf, MAX_BUF);
+				printf("\tread %ld bytes = %.*s\n", numread, numread, buf);
+			}
+			else if(evlist[j].events & (EPOLLHUP | EPOLLERR)) {
+				printf("\tclosing fd %d\n", evlist[j].data.fd);
+				if(close(evlist[j].data.fd) == -1)
+					errExit("close()");
+				numopendfds--;
+			}
+		}
+
 	}
 
-
-
-
-
+	printf("All file descriptors was closed\n");
 
 }
+
+/*
+프로그램 사용 방법
+1. epoll 감시 샘플을 실행한 뒤,
+2. FIFO를 2개 생성한다.
+$ mkfifo test1 test2
+각각 쓰기 endpoint를 먼저 연다.
+$ cat > test1
+^Z
+[1]+  Stopped                 cat > test1
+$ cat > test2
+^Z
+[2]+  Stopped                 cat > test2
+
+<감시 샘플의 출력>
+$ ./LinuxAPI2
+Opened "test1" on fd 4
+Opened "test2" on fd 5
+
+3. FIFO에 데이터를 쓴다.
+ahnmh-vw@ubuntu:~/workspace/linuxapi/LinuxAPI2/Debug$ fg 1
+cat > test1
+12345
+
+<감시 샘플의 출력>
+ready = 1
+fd = 4, events: EPOLLIN
+	read 6 bytes = 12345
+
+ahnmh-vw@ubuntu:~/workspace/linuxapi/LinuxAPI2/Debug$ fg 2
+cat > test2
+abcde
+
+<감시 샘플의 출력>
+ready = 1
+fd = 5, events: EPOLLIN
+	read 6 bytes = abcde
+
+4. FIFO 입력을 Ctrl + C로 종료하면,
+<감시 샘플의 출력>
+ready = 1
+fd = 4, events: EPOLLHUP
+	closing fd 4
+ready = 1
+fd = 5, events: EPOLLHUP
+	closing fd 5
+All file descriptors was closed
+
+
+*/
