@@ -77,17 +77,32 @@ void fileio(int argc, char *argv[])
 		break;
 
 	case 'w':
-		fd = open(file, O_WRONLY);
+		// append 모드로 쓰려면 O_APPEND
+		fd = open(file, O_WRONLY/*|O_APPEND*/);
 		// 표준 입력에서 읽어서 파일로 쓴다.
-		if((numread = read(STDIN_FILENO, buf, BUF_SIZE)) > 0)
+		if((numread = read(STDIN_FILENO, buf, BUF_SIZE)) > 0) {
+			// 파일 옵셋을 맨 앞으로 이동하여 나중에 쓴 데이터가 앞에 나오도록 설정,
+			// 단, O_APPEND 플래그가 지정되면 해당 플래그에 의해 무조건 옵셋이 맨뒤로 가기 때문에 적용되지 않음.
+			off_t ret;
+			if((ret = lseek(fd, 0, SEEK_SET)) == -1)
+				errexit("lseek");
 			if(write(fd, buf, numread) != numread)
 				errexit("write");
+		}
+
+		// 버퍼에 쓰여진 쓰기 데이터를 디스크로 즉시 쓰기(메타데이터는 갱신하지 않음)
+		// open 함수 호출 시 O_SYNC 플래그를 사용하거나, sync 함수를 호출할 수도 있지만 fdatasync가 성능상 가장 유리함.
+		if(fdatasync(fd) == -1)
+			errexit("fdatasync");
 
 		break;
 
 	}
 
-	close(fd);
+	// 열려 있는 파일 디스크립터 fd에 연관된 파일과의 매핑을 해제
+	// 파일을 닫기 전에 디스크에 확실히 기록하려면 동기식 입출력 방법을 사용해야 함.
+	if(close(fd) == -1)
+		errexit("close");
 
 }
 
@@ -99,8 +114,9 @@ O_CLOEXEC: 새 프로세스가 실행되면 파일은 자동으로 닫힌다.새
 O_CREAT: 새로 만듬
 O_EXCL: O_CREAT와 함께 사용하면 파일이 이미 있는 경우 open호출이 실패함. 파일 생성시 경쟁 상태를 회피함.
 O_NONBLOCK: 파일을 논블로킹 모드로 연다.
-O_SYNC: 파일을 동기식 입출력용으로 연다. 데이터를 물리적으로 디스크에 쓰기 전까지 쓰기 동작이 완료되지 않는다.
+O_SYNC: 파일을 동기식 입출력용으로 연다. 데이터를 물리적으로 디스크에 쓰기 전까지 쓰기 동작이 완료되지 않는다.(버퍼에 쓰여진 쓰기 데이터를 디스크로 즉시 쓰기)
 O_TRUC: 파일이 존재하고 일반 파일이며 flags 인자에 쓰기가 가능하도록 명시되어 있으면 파일 길이를 0으로 설정함.
+O_DIRECT: 페이지 캐시를 우회해서 사용자 영역 버퍼에서 디스크 장치로 바로 입출력을 수행함. 단, 입출력 요청 크기, 버퍼 정렬, 파일 옵셋은 디바이스의 섹터 크기(512)의 정수배가 되어야 함.
 */
 
 /* stat 명령을 통해 생성한 파일 test를 확인
