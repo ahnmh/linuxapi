@@ -9,7 +9,10 @@
 
 int main(int argc, char *argv[])
 {
-	fileio(argc, argv);
+//	fileio(argc, argv);
+	select_sample();
+//	pselect_sample();
+//	poll_sample();
 
 	return 0;
 }

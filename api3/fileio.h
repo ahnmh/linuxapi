@@ -8,6 +8,16 @@
 #ifndef FILEIO_H_
 #define FILEIO_H_
 
-void fileio();
+#include <stdio.h>
+#include <fcntl.h> // open, creat
+#include <unistd.h> // read
+#include <errno.h>
+#include "helper.h"
+
+void fileio(int argc, char *argv[]);
+
+void select_sample();
+void pselect_sample();
+void poll_sample();
 
 #endif /* FILEIO_H_ */

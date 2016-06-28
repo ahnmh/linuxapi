@@ -1,24 +1,13 @@
 /*
- * fileio.c
+ * fileio_read_write.c
  *
  *  Created on: Jun 24, 2016
  *      Author: ahnmh-vw
  */
 
-#include <stdio.h>
-#include <stdlib.h> // exit
 #include "fileio.h"
-#include <fcntl.h> // open, creat
-#include <unistd.h> // read
-#include <errno.h>
 
 #define BUF_SIZE 100
-
-static void errexit(char *msg)
-{
-	perror(msg);
-	exit(EXIT_FAILURE);
-}
 
 /*
 표준 파일 디스크립터
