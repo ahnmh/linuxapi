@@ -13,7 +13,6 @@
 #include <poll.h> // poll
 #include "fileio.h"
 
-#define MAX_BUF 1000 // 한번의 read로 읽을 수 있는 최대 바이트 수
 #define FD_COUNT 2 // 감시 대상 파일 디스크립터(예제에서는 FIFO를 가르킴)의 수
 
 
@@ -68,9 +67,9 @@ void select_sample()
 
 		// select가 리턴되었을 때, FIFO 파일 디스크립터 읽기가 가능한지 확인
 		if(FD_ISSET(fd, &readfds)) {
-			char buf[MAX_BUF];
+			char buf[BUF_SIZE];
 			ssize_t numread;
-			numread = read(fd, buf, MAX_BUF);
+			numread = read(fd, buf, BUF_SIZE);
 			if(numread == -1)
 				errexit("read");
 
@@ -118,9 +117,9 @@ void pselect_sample()
 		}
 
 		if(FD_ISSET(fd, &readfds)) {
-			char buf[MAX_BUF];
+			char buf[BUF_SIZE];
 			ssize_t numread;
-			numread = read(fd, buf, MAX_BUF);
+			numread = read(fd, buf, BUF_SIZE);
 			if(numread == -1)
 				errexit("read");
 
@@ -164,9 +163,9 @@ void poll_sample()
 
 		// poll 함수 리턴시 읽기 이벤트 발생 여부 확인
 		if(fds.revents & POLLIN) {
-			char buf[MAX_BUF];
+			char buf[BUF_SIZE];
 			ssize_t numread;
-			numread = read(fd, buf, MAX_BUF);
+			numread = read(fd, buf, BUF_SIZE);
 			if(numread == -1)
 				errexit("read");
 
