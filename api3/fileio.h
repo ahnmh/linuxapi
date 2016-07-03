@@ -20,4 +20,7 @@ void select_sample();
 void pselect_sample();
 void poll_sample();
 
+void fileio_stdio_write();
+void fileio_stdio_write_lock();
+
 #endif /* FILEIO_H_ */

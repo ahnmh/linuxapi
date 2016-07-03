@@ -10,9 +10,11 @@
 int main(int argc, char *argv[])
 {
 //	fileio(argc, argv);
-	select_sample();
+//	select_sample();
 //	pselect_sample();
 //	poll_sample();
 
+//	fileio_stdio_write();
+	fileio_stdio_write_lock();
 	return 0;
 }
