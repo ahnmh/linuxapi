@@ -21,9 +21,12 @@ void fileio(int argc, char *argv[]);
 void select_sample();
 void pselect_sample();
 void poll_sample();
+void epoll_sample();
 
 void fileio_stdio_read();
 void fileio_stdio_write();
 void fileio_stdio_write_lock();
+
+void fileio_readv_writev();
 
 #endif /* FILEIO_H_ */

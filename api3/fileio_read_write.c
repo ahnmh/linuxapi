@@ -7,8 +7,6 @@
 
 #include "fileio.h"
 
-#define BUF_SIZE 100
-
 /*
 표준 파일 디스크립터
 - 표준 입력(0) = STDIN_FILENO 일반적으로 키보드와 같은 터미널의 입력 장치에 연결됨.
@@ -16,7 +14,7 @@
 - 표준 에러(2) = STDERR_FILENO
 */
 
-void fileio(int argc, char *argv[])
+void fileio_read_write(int argc, char *argv[])
 {
 	const char *file = "test";
 	int fd;
