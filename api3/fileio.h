@@ -12,6 +12,7 @@
 #include <fcntl.h> // open, creat
 #include <unistd.h> // read
 #include <errno.h>
+#include <string.h>
 #include "helper.h"
 
 #define BUF_SIZE 1000
@@ -28,5 +29,12 @@ void fileio_stdio_write();
 void fileio_stdio_write_lock();
 
 void fileio_readv_writev();
+
+void mmap_sample(int argc, char *argv[]);
+
+void fileio_aio_write();
+
+void get_inode();
+void get_physical_block_number();
 
 #endif /* FILEIO_H_ */
