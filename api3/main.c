@@ -30,7 +30,14 @@ int main(int argc, char *argv[])
 //	get_physical_block_number();
 
 //	fork_exec_wait();
-	system_sample();
+//	system_sample();
+//	make_daemon();
+
+//	nice_control();
+//	priority_control();
+//	affinity_control();
+//	sched_control();
+	limit_control();
 
 	return 0;
 }

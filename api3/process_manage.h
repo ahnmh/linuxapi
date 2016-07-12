@@ -18,5 +18,13 @@
 
 void fork_exec_wait();
 void system_sample();
+void make_daemon();
+
+void nice_control();
+void priority_control();
+
+void affinity_control();
+void sched_control();
+void limit_control();
 
 #endif /* PROCESS_MANAGE_H_ */
