@@ -7,6 +7,7 @@
 
 #include "fileio.h"
 #include "process_manage.h"
+#include "pthread_example.h"
 
 int main(int argc, char *argv[])
 {
@@ -37,7 +38,10 @@ int main(int argc, char *argv[])
 //	priority_control();
 //	affinity_control();
 //	sched_control();
-	limit_control();
+//	limit_control();
+
+//	create();
+	exit_cancel();
 
 	return 0;
 }
