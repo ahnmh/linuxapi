@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 
 //	signal_legacy();
 	signal_send();
+	signal_helper();
 
 	return 0;
 }

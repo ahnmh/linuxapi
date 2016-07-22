@@ -88,3 +88,8 @@ void signal_send()
 	}
 
 }
+
+void signal_helper()
+{
+
+}

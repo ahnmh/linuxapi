@@ -17,5 +17,6 @@
 
 void signal_legacy();
 void signal_send();
+void signal_helper();
 
 #endif /* SIGNAL_EXAMPLE_H_ */
