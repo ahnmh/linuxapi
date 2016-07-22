@@ -118,4 +118,6 @@ void file_event()
 	for (i = 0; i < cnt; ++i) {
 		inotify_rm_watch(notify_fd, fw[i].watchd);
 	}
+
+	close(notify_fd);
 }

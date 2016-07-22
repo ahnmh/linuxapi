@@ -8,6 +8,9 @@
 #ifndef PROCESS_FUNC_H_
 #define PROCESS_FUNC_H_
 
+#include <sys/types.h>
+#include <sys/wait.h>
+
 void process_func();
 void process_sync_by_signal();
 void process_exit();

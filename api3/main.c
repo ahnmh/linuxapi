@@ -5,9 +5,12 @@
  *      Author: ahnmh-vw
  */
 
-#include "fileio.h"
-#include "process_manage.h"
-#include "pthread_example.h"
+//#include "fileio.h"
+//#include "process_manage.h"
+//#include "pthread_example.h"
+//#include "file_directory.h"
+//#include "mem.h"
+#include "signal_example.h"
 
 int main(int argc, char *argv[])
 {
@@ -41,7 +44,29 @@ int main(int argc, char *argv[])
 //	limit_control();
 
 //	create();
-	exit_cancel();
+//	exit_cancel();
+//	mutex_example();
+//	mutex_cond_example();
+
+//	get_stat(argc, argv);
+//	chn_access(argc, argv);
+//	chn_owner(argc, argv);
+//	working_diretory();
+//	make_directory();
+//	traversal_directory(argc, argv);
+//	ioctl_example(argc, argv);
+//	inotify_example(argc, argv);
+
+//	mem_alloc();
+//	mem_anonymous_mmap();
+//	mem_alloc_control();
+//	mem_alloca(argc, argv);
+//	mem_variable_len_array(argc, argv);
+//	mem_handle_sample(argc, argv);
+//	mlock_sample();
+
+//	signal_legacy();
+	signal_send();
 
 	return 0;
 }
