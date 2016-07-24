@@ -66,8 +66,10 @@ int main(int argc, char *argv[])
 //	mlock_sample();
 
 //	signal_legacy();
-	signal_send();
-	signal_helper();
+//	signal_send();
+//	signal_helper();
+//	signal_block();
+	signal_suspend();
 
 	return 0;
 }
