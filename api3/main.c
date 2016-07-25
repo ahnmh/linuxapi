@@ -69,7 +69,8 @@ int main(int argc, char *argv[])
 //	signal_send();
 //	signal_helper();
 //	signal_block();
-	signal_suspend();
+//	signal_suspend();
+	signal_sigaction();
 
 	return 0;
 }

@@ -20,5 +20,6 @@ void signal_send();
 void signal_helper();
 void signal_block();
 void signal_suspend();
+void signal_sigaction();
 
 #endif /* SIGNAL_EXAMPLE_H_ */
