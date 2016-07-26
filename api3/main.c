@@ -11,6 +11,7 @@
 //#include "file_directory.h"
 //#include "mem.h"
 #include "signal_example.h"
+#include "time_timer.h"
 
 int main(int argc, char *argv[])
 {
@@ -70,7 +71,12 @@ int main(int argc, char *argv[])
 //	signal_helper();
 //	signal_block();
 //	signal_suspend();
-	signal_sigaction();
+//	signal_sigaction();
+
+//	get_time();
+//	set_time();
+//	time_format();
+	time_sleep();
 
 	return 0;
 }
