@@ -10,7 +10,7 @@
 //#include "pthread_example.h"
 //#include "file_directory.h"
 //#include "mem.h"
-#include "signal_example.h"
+//#include "signal_example.h"
 #include "time_timer.h"
 
 int main(int argc, char *argv[])
@@ -76,7 +76,11 @@ int main(int argc, char *argv[])
 //	get_time();
 //	set_time();
 //	time_format();
-	time_sleep();
-
+//	time_sleep();
+//	time_clock_nanosleep();
+//	timer_example_alarm();
+//	timer_example_setitimer();
+//	timer_example_settime_signal();
+	timer_example_settime_thread();
 	return 0;
 }

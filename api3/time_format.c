@@ -26,10 +26,17 @@ void get_time()
 
 	// timespec: s와 ns단위의 정밀도를 제공하는 구조체
 /*
-	표준 시계의 종류
-	- CLOCK_REALTIME: 시스템 전역에서 사용하는 실시간 시계.
-	- CLOCK_MONOTONIC: 시스템 시동과 같이 불특정 시작 시점부터 경과한 시간
-	- CLOCK_PROCESS_CPUTIME_ID: 프로세서 수준에서 지원되는 각 프로세스용 고해상도 시계
+	POSIX 표준 시계의 종류
+	- CLOCK_REALTIME:
+		시스템 전역에서 사용하는 실시간 시계.
+		date 명령에서 볼 수 있는 시계이며, 시스템의 재설정에 의해 과거로 가거나 윤초에 의해 미래로 도약하는 wall-clock(벽걸이시계)이다.
+		RTOS의 realtime이 아니라 일상/실제(real)생활에서 볼 수 있는 시계를 의미한다.
+	- CLOCK_MONOTONIC:
+		시스템 시동과 같이 불특정 시작 시점부터 경과한 시간.(/proc/uptime)
+		말그대로 단조롭게 증가하는 시계이며, REALTIME과 같이 시간의 점프가 없다.
+	- CLOCK_PROCESS_CPUTIME_ID:
+		프로세서 수준에서 지원되는 각 프로세스용 고해상도 시계.
+		프로세스의 시작시각으로부터 단조증가하여 프로세스의 사용시간에 따라 증가한다.
 	- CLOCK_THREAD_CPUTIME_ID: 프로세스 스레드마다 지원되는 각 스레드용 시계
 */
 	struct timespec ts;

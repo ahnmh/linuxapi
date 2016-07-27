@@ -17,6 +17,11 @@ static void signal_handler_adv(int sig, siginfo_t *si, void *ctx)
 	printf("signal code = %d\n", si->si_code);
 }
 
+/*
+일부 유닉스 시스템은 SIGALRM을 사용하여 sleep, usleep 함수를 구현한다.
+alarm, settimer 함수도 SIGALRM을 사용하기 때문에 이러한 함수들을 중첩해서 사용해선 안된다.
+잠깐 동안 기다리는 경우 SIGALRM을 사용하지 않는 nanosleep 함수를 사용해야 한다.
+*/
 void time_sleep()
 {
 	struct sigaction sa;
@@ -52,5 +57,32 @@ void time_sleep()
 	// select를 사용한 잠들기: 이식성이 높다.
 	struct timeval tv = {10, 500}; // 10.5s
 	select(0, NULL, NULL, NULL, &tv);
+
+}
+
+// POSIX 시계를 통한 고급 잠들기 기법
+void time_clock_nanosleep()
+{
+	// 상대 시간 잠들기
+	struct timespec ts;
+	ts.tv_sec = 1;
+	ts.tv_nsec = 500000000;
+
+	if(clock_nanosleep(CLOCK_REALTIME, 0, &ts, NULL) == -1)
+		errexit("clock_nanosleep");
+
+
+	// 절대 시간 잠들기
+
+	// 현재 시간을 구한다.
+	struct timespec ts2;
+	if(clock_gettime(CLOCK_MONOTONIC, &ts2) == -1)
+		errexit("clock_gettime");
+
+	// 정확히 1초 동안 잠든다.
+	// 페이지 폴트가 나거나 sleep 이전에 컨텍스트 스위칭이 발생해서 시간이 경과하면 의도한 시간보다 더 길게 잠들 수도 있는 부분을 제거한다.
+	ts2.tv_sec += 1;
+	if(clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &ts2, NULL) == -1)
+		errexit("clock_nanosleep");
 
 }
