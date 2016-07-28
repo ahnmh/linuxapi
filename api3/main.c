@@ -81,6 +81,8 @@ int main(int argc, char *argv[])
 //	timer_example_alarm();
 //	timer_example_setitimer();
 //	timer_example_settime_signal();
-	timer_example_settime_thread();
+//	timer_example_settime_thread();
+	gcc_extension();
+
 	return 0;
 }
