@@ -10,6 +10,9 @@
 #include <ctype.h> // toupper
 #include <stdlib.h>
 #include <string.h>
+
+#include <fcntl.h>
+#include <unistd.h>
 /*
 __attribute__(option)
 : 컴파일러의 특정 옵션에 해당하는 기능을 enable 할 때 사용한다.
@@ -75,8 +78,8 @@ static __attribute__ ((malloc)) void * double_size(int size)
 
 /*
 warn_unused_result 키워드
-- 리턴을 하는 함수인데 리턴값을 쓰지 않는 경우, warning을 발생하도록 지정함.
-- read와 같은 함수의 경우
+- 리턴을 하는 함수인데 해당 함수 호출 이후 리턴값을 사용하지 않는 경우, warning을 발생하도록 지정함.
+- read와 같은 함수의 경우에 해당함.
 - 최적화는 아니고 프로그래밍을 돕는다.
 */
 static __attribute__ ((warn_unused_result)) int IsOdd(int chk)
@@ -95,6 +98,70 @@ static __attribute__ ((deprecated)) int old_version()
 	printf("do not use this anynome!\n");
 	return 0;
 }
+
+
+/*
+unused 키워드
+- 지정한 함수나 인자가 사용되지 않음을 알려주어 관련 경고를 출력하지 않는다.
+*/
+static __attribute__ ((unused)) int unused_func()
+{
+	printf("unused function does not show yellow bottom warning line\n");
+	return 0;
+}
+
+/*
+ packed 키워드
+- 구조체를 패딩 없이 꽉 채우기
+*/
+struct test_unpacked {
+	char a[10];
+	int b;
+};
+struct __attribute__  ((packed)) test_packed {
+	char a[10];
+	int b;
+};
+
+/*
+aligned (2의 배수) 키워드
+- 특정 변수의 최소 정렬값을 지정한다.
+*/
+struct test_aligned {
+	char a[10] __attribute__ ((aligned (32))); // 32바이트 크기로 정렬
+	char b[10] __attribute__ ((aligned (32))); // 32바이트 크기로 정렬
+};
+
+// 아래와 같이 자주 사용해야 하는 키워드라면 미리 단축 표현을 사용할 수도 있다.
+#if __GNUC__ >= 3
+#undef inline
+#define inline inline __attribute__ ((alwyas_inline))
+#else
+#define inline
+#endif
+
+
+/*
+likely, unlikely 키워드
+- 컴파일러에게 어디로 분기할지 힌트를 줘서 코드 재배치를 통해 성능을 향상시킨다.
+- 거의 발생하지 않는 에러인 경우 unlikely를 사용하면 성능이 개선된다.
+- 문법이 복잡하므로 아래와 같이 define해서 쓴다.
+*/
+#define likely(x)  __builtin_expect(!!(x), 1)
+#define unlikely(x)  __builtin_expect(!!(x), 0)
+
+
+/*
+구조체 멤버의 옵셋
+*/
+
+#include <stddef.h> // offsetof 매크로가 정의된 헤더파일
+struct offsettest {
+	int a;
+	int b;
+	char *c;
+	char d[10];
+};
 
 void gcc_extension()
 {
@@ -150,7 +217,48 @@ void gcc_extension()
 /*	deprecated 키워드 테스트*/
 	// 해당 함수를 호출하는 경우, 아래와 같은 warning을 발생함.
 	// warning: ‘old_version’ is deprecated (declared at ../gcc_extension.c:93) [-Wdeprecated-declarations]
-//	int ret = old_version();
+	int ret = old_version();
+
+
+/*	unused 키워드 테스트*/
+	// 아래와 같이 함수 뿐만 아니라 변수에도 쓸 수 있다.
+	int unused __attribute__ ((unused))  = 10;
+
+/*	packed 키워드 테스트*/
+	// 일반 구조체의 경우 char 데이터 다음 int 데이터가 오면 3byte를 비워둔다. 따라서 구조체 크기는 1 + 3(padding) + 4 = 8
+	printf("sizeof normal struct = %ld\n", sizeof(struct test_unpacked));
+	// packed 구조체의 경우 char 데이터 다음 int 데이터가 오면 연달아 오게된다. 따라서 구조체 크기는 1 + 4 = 5
+	printf("sizeof packed struct = %ld\n", sizeof(struct test_packed));
+/*	aligned 키워드 테스트	*/
+	printf("sizeof aligned struct = %ld\n", sizeof(struct test_aligned));
+
+/*	unlikely 매크로 테스트 */
+	ret = close(STDIN_FILENO);
+	// unlikely: 분기문이 높은 확률로 거의 실행되지 않는 경우에 쓴다.
+	if(unlikely(ret))
+		perror("close");
+
+/*	offsetof 매크로 테스트 */
+	int start = offsetof(struct offsettest, d); // 4 + 4 + 8 = 16
+	printf("start of member d = %d\n", start);
+
+/*	case 범위 지정 테스트*/
+	// GCC 정말 훌륭하다..
+	// 생략 부호 ... 앞뒤로는 반드시 공백이 있어야 함.
+	int val = 'Q';
+	switch(val) {
+	case 'A' ... 'F':
+		printf("set 1\n");
+		break;
+
+	case 'G' ... 'T':
+		printf("set 2\n");
+		break;
+
+	case 'U' ... 'Z':
+		printf("set 3\n");
+		break;
+	}
 
 
 
